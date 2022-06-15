@@ -3,6 +3,12 @@
   "include": ["."],
   "exclude": ["dist", "node_modules"],
   "compilerOptions": {
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "moduleResolution": "node",
+    "baseUrl": ".",
+    "paths": {
+      "@core/*": ["src/core/*"],
+      "@utils/*": ["src/utils/*"]
+    }
   }
 }

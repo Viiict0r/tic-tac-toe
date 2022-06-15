@@ -16,6 +16,7 @@ module.exports = {
     'react/prop-types': 'off',
     'no-use-before-define': 'off',
     'react/display-name': 'off',
-    '@typescript-eslint/explicit-module-boundary-types': 'off'
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
+    '@typescript-eslint/no-explicit-any': 'off'
   }
 }

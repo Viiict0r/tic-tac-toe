@@ -1,37 +1,38 @@
 module.exports = {
   env: {
     es2021: true,
-    node: true,
+    node: true
   },
   extends: [
-    "standard",
-    "plugin:@typescript-eslint/recommended",
-    "prettier",
-    "plugin:prettier/recommended",
+    'standard',
+    'plugin:@typescript-eslint/recommended',
+    'prettier',
+    'plugin:prettier/recommended'
   ],
-  parser: "@typescript-eslint/parser",
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 12,
-    sourceType: "module",
+    sourceType: 'module'
   },
   globals: {
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly",
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly'
   },
-  plugins: ["@typescript-eslint", "prettier"],
+  plugins: ['@typescript-eslint', 'prettier', 'import'],
   rules: {
-    "prettier/prettier": "error",
-    "import/extensions": [
-      "error",
-      "ignorePackages",
+    'prettier/prettier': 'error',
+    'no-useless-constructor': 'off',
+    'import/extensions': [
+      'error',
+      'ignorePackages',
       {
-        ts: "never",
-      },
-    ],
+        ts: 'never'
+      }
+    ]
   },
   settings: {
-    "import/resolver": {
-      typescript: {},
-    },
-  },
-};
+    'import/resolver': {
+      typescript: {}
+    }
+  }
+}

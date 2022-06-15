@@ -1,0 +1,20 @@
+@import 'colors';
+
+.button {
+  outline: none;
+  padding: 10px 32px;
+  border: none;
+  outline: none;
+  background-color: $blue;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #fff;
+  transition: all 200ms ease-in-out;
+  cursor: pointer;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}

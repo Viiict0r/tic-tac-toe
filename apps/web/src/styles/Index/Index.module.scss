@@ -1,0 +1,25 @@
+@import 'colors';
+
+.wrapper {
+  max-width: 500px;
+  margin: 200px auto 0 auto;
+
+  h1 {
+    margin-bottom: 60px;
+    text-align: center;
+    color: $blue;
+  }
+}
+
+.input__wrapper {
+  text-align: center;
+
+  input {
+    margin-top: 15px;
+    margin-bottom: 25px;
+  }
+
+  span {
+    font-size: 16px;
+  }
+}
