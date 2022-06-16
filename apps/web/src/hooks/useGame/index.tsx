@@ -1,5 +1,9 @@
+import Logo from '@components/Logo'
+import Spinner from '@components/Spinner'
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { io, Socket } from 'socket.io-client'
+
+import styles from './styles.module.scss'
 
 type IGameContext = {
   connection: Socket | null
@@ -13,7 +17,9 @@ export const GameProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const connection = io('localhost:3333')
 
-    setConnection(connection)
+    setTimeout(() => {
+      setConnection(connection)
+    }, 1500)
   }, [])
 
   return (
@@ -22,7 +28,14 @@ export const GameProvider: React.FC = ({ children }) => {
         connection
       }}
     >
-      {children}
+      {!connection || !connection?.active ? (
+        <div className={styles.loading_container}>
+          <Logo />
+          <Spinner size={40} color="#FFD460" />
+        </div>
+      ) : (
+        children
+      )}
     </GameContext.Provider>
   )
 }

@@ -4,10 +4,10 @@
   max-width: 500px;
   margin: 200px auto 0 auto;
 
-  h1 {
-    margin-bottom: 60px;
-    text-align: center;
-    color: $blue;
+  .logo {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 25px;
   }
 }
 

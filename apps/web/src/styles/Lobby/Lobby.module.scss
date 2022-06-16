@@ -1,0 +1,30 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+
+  .wrapper_content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    .welcome__text {
+      margin: 10px 0px 10px 0px;
+
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+
+  .action_wrapper {
+    margin-top: 35px;
+    display: flex;
+    flex-direction: column;
+
+    button {
+      margin-bottom: 15px;
+    }
+  }
+}

@@ -12,7 +12,7 @@ type Listener = {
 }
 
 class ServerManager {
-  private readonly users: User[] = []
+  private users: User[] = []
   private readonly listeners: Listener[] = []
   private connection: Server | undefined
 
@@ -49,9 +49,30 @@ class ServerManager {
       })
 
       socket.on('disconnect', () => {
-        console.log('Connection loose')
+        this.removeUserById(socket.id)
+        console.log('[Debug]', socket.id, 'disconnected')
       })
     })
+  }
+
+  public removeUserById(id: string) {
+    const user = this.users.find(usr => usr.id === id)
+
+    if (!user) return
+
+    this.users = this.users.filter(usr => usr.id !== id)
+
+    console.log('[Debug]', user.nickname, 'left the lobby')
+  }
+
+  public removeUserByNickname(nickname: string) {
+    const user = this.users.find(usr => usr.nickname === nickname)
+
+    if (!user) return
+
+    this.users = this.users.filter(usr => usr.nickname !== nickname)
+
+    console.log('[Debug]', user.nickname, 'left the lobby')
   }
 
   public getUsers() {
@@ -63,6 +84,7 @@ class ServerManager {
       throw new Error('Já existe um jogador com esse nickname online')
     }
 
+    console.log('[Debug]', user.nickname, 'joined in the lobby')
     this.users.push(user)
   }
 }

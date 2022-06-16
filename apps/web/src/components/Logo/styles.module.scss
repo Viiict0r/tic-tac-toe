@@ -1,0 +1,19 @@
+@import 'colors';
+
+.logo__wrapper {
+  text-align: center;
+  width: max-content;
+  cursor: default;
+  user-select: none;
+
+  span {
+    font-family: 'Permanent Marker', cursive !important;
+    font-size: 65px;
+    color: $yellow;
+    letter-spacing: 5px;
+
+    &:last-child {
+      letter-spacing: 0;
+    }
+  }
+}

@@ -1,9 +1,22 @@
+@import 'colors';
+
 .input {
-  background-color: #f2eeed;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: $white;
   padding: 12px 20px;
   border: none;
   outline: none;
   border-radius: 20px;
   width: 100%;
   font-size: 16px;
+  border: 1px solid transparent;
+  transition: border-color 200ms ease-in-out;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.4)
+  }
+
+  &:focus {
+    border-color: rgba(255, 255, 255, 0.15);
+  }
 }
