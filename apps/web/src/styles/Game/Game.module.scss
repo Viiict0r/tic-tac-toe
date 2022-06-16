@@ -1,0 +1,35 @@
+@import 'colors';
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.players {
+  display: grid;
+  grid-template-columns: 1fr 120px 1fr;
+  margin: 20px 0 40px 0;
+
+  .vs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-family: 'Permanent Marker', cursive !important;
+      font-size: 25px;
+      color: $orange;
+    }
+  }
+}
+
+.turn {
+  margin: 5px 0 40px;
+  span {
+    color: $green;
+    font-size: 18px;
+    font-weight: 600;
+  }
+}

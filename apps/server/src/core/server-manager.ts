@@ -3,7 +3,7 @@ import { Express } from 'express'
 import { Event, Server, Socket } from 'socket.io'
 import http from 'http'
 
-import { User } from '@utils/dtos/User'
+import { User, UserStatus } from '@utils/dtos/User'
 import { Events } from '@utils/events'
 
 type Listener = {
@@ -77,6 +77,20 @@ class ServerManager {
 
   public getUsers() {
     return this.users
+  }
+
+  public updateUserStatus(nickname: string, status: UserStatus) {
+    const index = this.users.findIndex(usr => usr.nickname === nickname)
+    const user = this.users.find(usr => usr.nickname === nickname)
+
+    if (index === -1 || !user) return
+
+    this.users[index] = {
+      ...user,
+      status
+    }
+
+    console.log('[Debug] Status of', user.nickname, 'changed to', status)
   }
 
   public addUser(user: User) {

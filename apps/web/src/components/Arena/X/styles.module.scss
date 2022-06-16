@@ -1,0 +1,9 @@
+@import 'colors';
+
+.x {
+  font-size: 80px;
+  font-family: 'Permanent Marker', cursive !important;
+  color: $yellow;
+  cursor: default;
+  user-select: none;
+}

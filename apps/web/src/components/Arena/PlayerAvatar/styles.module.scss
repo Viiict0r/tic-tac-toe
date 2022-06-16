@@ -1,0 +1,41 @@
+@import "colors";
+
+.container {
+  text-align: center;
+  padding: 5px 10px;
+  width: max-content;
+
+  .photo {
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.2);
+    width: 55px;
+    height: 55px;
+    border-radius: 999px;
+    margin-bottom: 8px;
+  }
+
+  .nickname {
+    span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+
+  .team {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    span {
+      font-size: 18px !important;
+      line-height: 0;
+    }
+  }
+}

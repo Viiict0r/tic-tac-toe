@@ -1,17 +1,21 @@
 @import "colors";
 @import "mixins";
 
-body, html {
+body, html, #__next {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
   background-color: $dark;
   color: $white;
   font-family: 'Montserrat', sans-serif;
+  height: 100%;
+  width: 100%;
 }
 
 .container {
   max-width: 1265px;
   margin: 0 auto;
   padding: 0 15px;
+  height: 100%;
+  width: 100%;
 }

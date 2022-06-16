@@ -1,0 +1,9 @@
+@import 'colors';
+
+.o {
+  font-size: 80px;
+  font-family: 'Permanent Marker', cursive !important;
+  color: $red;
+  cursor: default;
+  user-select: none;
+}

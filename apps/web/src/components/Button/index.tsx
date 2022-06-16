@@ -20,7 +20,7 @@ export const Button: React.FC<Props> = ({
     <button
       disabled={disabled || loading}
       className={`${styles.button__base} ${styles[`button__${size}`]} ${
-        loading ? 'loading' : ''
+        loading ? styles.loading : ''
       }`}
       {...rest}
     >

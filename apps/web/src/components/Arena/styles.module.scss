@@ -1,0 +1,17 @@
+@import "colors";
+
+.container {
+  width: max-content;
+  display: grid;
+  grid-template-rows: repeat(3, 150px);
+  grid-template-columns: repeat(3, 150px);
+  grid-gap: 4px;
+  background-color: rgba(255, 255, 255, 0.2);
+
+  > div {
+    background-color: $dark;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
