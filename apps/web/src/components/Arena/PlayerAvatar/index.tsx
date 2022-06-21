@@ -1,18 +1,27 @@
+import { PlayerSide } from '@hooks/useGame/types'
 import React from 'react'
+import O from '../O'
 import X from '../X'
 
 import styles from './styles.module.scss'
 
-const PlayerAvatar: React.FC = () => {
+type Props = {
+  username: string
+  side?: PlayerSide | null
+}
+
+const PlayerAvatar: React.FC<Props> = ({ username, side = null }) => {
   return (
     <div className={styles.container}>
       <div className={styles.photo}>
-        <div className={styles.team}>
-          <X />
-        </div>
+        {!!side && (
+          <div className={styles.team}>
+            {side === PlayerSide.X ? <X /> : <O />}
+          </div>
+        )}
       </div>
       <div className={styles.nickname}>
-        <span>Viiict0r</span>
+        <span>{username}</span>
       </div>
     </div>
   )

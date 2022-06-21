@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 
@@ -10,10 +11,12 @@ import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import Spinner from '@components/Spinner'
 import { useGame } from '@hooks/useGame'
 import { Events } from '@utils/events'
+import { GameStatus } from '@hooks/useGame/types'
 
 enum ScreenState {
   NORMAL = 'normal',
-  SEARCHING = 'searching'
+  SEARCHING = 'searching',
+  ADVERSARY_FINDED = 'match_finded'
 }
 
 const Lobby: NextPage = () => {
@@ -21,7 +24,7 @@ const Lobby: NextPage = () => {
   const [actionLoading, setActionLoading] = useState(false)
 
   const { user, logout } = useProfile()
-  const { connection } = useGame()
+  const { connection, game } = useGame()
 
   const handleUserLeave = () => {
     logout()
@@ -71,6 +74,16 @@ const Lobby: NextPage = () => {
     }
   }, [user])
 
+  useEffect(() => {
+    if (game !== null && game.adversary && game.status === GameStatus.WAITING) {
+      setState(ScreenState.ADVERSARY_FINDED)
+    }
+
+    if (game !== null && game.adversary && game.status === GameStatus.STARTED) {
+      Router.push(`/game/${game.id}`)
+    }
+  }, [game])
+
   return (
     <div className="container">
       <div className={styles.wrapper}>
@@ -78,7 +91,13 @@ const Lobby: NextPage = () => {
           <Logo />
           <div className={styles.welcome__text}>
             <span>
-              Bem vindo(a) <b>{user?.nickname}</b>!
+              {state === ScreenState.ADVERSARY_FINDED ? (
+                'Adversário encontrado!'
+              ) : (
+                <>
+                  Bem vindo(a) <b>{user?.nickname}</b>!
+                </>
+              )}
             </span>
           </div>
           {state === ScreenState.NORMAL && (
@@ -97,10 +116,29 @@ const Lobby: NextPage = () => {
             </div>
           )}
 
+          {state === ScreenState.ADVERSARY_FINDED && (
+            <div className={styles.searching_wrapper}>
+              <div className={styles.avatar}>
+                <PlayerAvatar username={user?.nickname || ''} />
+              </div>
+              <div className={styles.separator_vs}>
+                <span>VS</span>
+              </div>
+              <div className={styles.avatar}>
+                <PlayerAvatar username={game?.adversary?.name || ''} />
+              </div>
+              <div className={styles.cancel}>
+                <span>
+                  Iniciando partida<b>...</b>
+                </span>
+              </div>
+            </div>
+          )}
+
           {state === ScreenState.SEARCHING && (
             <div className={styles.searching_wrapper}>
               <div className={styles.avatar}>
-                <PlayerAvatar />
+                <PlayerAvatar username={user?.nickname || ''} />
               </div>
               <div className={styles.separator}></div>
               <div className={styles.searching}>

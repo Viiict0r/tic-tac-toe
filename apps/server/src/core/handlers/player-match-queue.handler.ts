@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io'
 
 import ServerManager from '@core/server-manager'
-import { UserStatus } from '@utils/dtos/User'
+import { PlayerStatus } from '@utils/models/Player'
 
 type ParamUser = {
   nickname: string
@@ -15,7 +15,7 @@ export const PlayerMatchQueue = (
 ) => {
   ServerManager.updateUserStatus(
     user.nickname,
-    user.action === 'enter' ? UserStatus.SEARCHING : UserStatus.AWAY
+    user.action === 'enter' ? PlayerStatus.SEARCHING : PlayerStatus.AWAY
   )
 
   callback()

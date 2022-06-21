@@ -3,8 +3,9 @@ import { Express } from 'express'
 import { Event, Server, Socket } from 'socket.io'
 import http from 'http'
 
-import { User, UserStatus } from '@utils/dtos/User'
 import { Events } from '@utils/events'
+import gameMatchJob from 'src/jobs/game-match.job'
+import { Player, PlayerStatus } from '@utils/models/Player'
 
 type Listener = {
   event: Events | Event
@@ -12,7 +13,7 @@ type Listener = {
 }
 
 class ServerManager {
-  private users: User[] = []
+  private users: Player[] = []
   private readonly listeners: Listener[] = []
   private connection: Server | undefined
 
@@ -26,6 +27,7 @@ class ServerManager {
     })
 
     this.registerListeners()
+    this.runjobs()
 
     server.listen(3333, () => {
       console.log('[Server] Listening on 3333')
@@ -38,6 +40,10 @@ class ServerManager {
 
   public getConnection(): Server | undefined {
     return this.connection
+  }
+
+  private runjobs() {
+    gameMatchJob.execute()
   }
 
   private registerListeners() {
@@ -56,50 +62,50 @@ class ServerManager {
   }
 
   public removeUserById(id: string) {
-    const user = this.users.find(usr => usr.id === id)
+    const user = this.users.find(usr => usr.getUserId() === id)
 
     if (!user) return
 
-    this.users = this.users.filter(usr => usr.id !== id)
+    this.users = this.users.filter(usr => usr.getUserId() !== id)
 
-    console.log('[Debug]', user.nickname, 'left the lobby')
+    console.log('[Debug]', user.getUsername(), 'left the lobby')
   }
 
   public removeUserByNickname(nickname: string) {
-    const user = this.users.find(usr => usr.nickname === nickname)
+    const user = this.users.find(usr => usr.getUsername() === nickname)
 
     if (!user) return
 
-    this.users = this.users.filter(usr => usr.nickname !== nickname)
+    this.users = this.users.filter(usr => usr.getUsername() !== nickname)
 
-    console.log('[Debug]', user.nickname, 'left the lobby')
+    console.log('[Debug]', user.getUsername(), 'left the lobby')
   }
 
   public getUsers() {
     return this.users
   }
 
-  public updateUserStatus(nickname: string, status: UserStatus) {
-    const index = this.users.findIndex(usr => usr.nickname === nickname)
-    const user = this.users.find(usr => usr.nickname === nickname)
+  public updateUserStatus(nickname: string, status: PlayerStatus) {
+    const index = this.users.findIndex(usr => usr.getUsername() === nickname)
+    const user = this.users.find(usr => usr.getUsername() === nickname)
 
     if (index === -1 || !user) return
 
-    this.users[index] = {
-      ...user,
-      status
-    }
+    user.setStatus(status)
 
-    console.log('[Debug] Status of', user.nickname, 'changed to', status)
+    this.users[index] = user
+
+    console.log('[Debug] Status of', user.getUsername(), 'changed to', status)
   }
 
-  public addUser(user: User) {
-    if (this.users.find(usr => usr.nickname === user.nickname)) {
+  public addUser(user: Player) {
+    if (this.users.find(usr => usr.getUsername() === user.getUsername())) {
       throw new Error('Já existe um jogador com esse nickname online')
     }
 
-    console.log('[Debug]', user.nickname, 'joined in the lobby')
     this.users.push(user)
+
+    console.log('[Debug]', user.getUsername(), 'joined in the lobby')
   }
 }
 

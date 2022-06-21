@@ -1,3 +1,5 @@
+@import "colors";
+
 .wrapper {
   display: flex;
   justify-content: center;
@@ -30,7 +32,7 @@
 
   .searching_wrapper {
     display: grid;
-    grid-template-columns: 100px 1px 1fr;
+    grid-template-columns: 120px minmax(1px, auto) minmax(120px, 1fr);
     grid-column-gap: 15px;
     margin-top: 25px;
 
@@ -38,6 +40,19 @@
       width: 1px;
       background-color: rgba(255, 255, 255, 0.2);
       height: 100%;
+    }
+
+    .separator_vs {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+
+      span {
+        font-family: 'Permanent Marker', cursive !important;
+        color: $red;
+        font-size: 20px;
+      }
     }
 
     .searching {
