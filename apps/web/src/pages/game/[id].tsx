@@ -4,11 +4,11 @@ import React from 'react'
 import styles from '@styles/Game/Game.module.scss'
 import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import { useGame } from '@hooks/useGame'
-import { useProfile } from '@hooks/useProfile'
+import { usePlayer } from '@hooks/usePlayer'
 
 const Game: React.FC = () => {
-  const { game, connection } = useGame()
-  const { user } = useProfile()
+  const { game, adversary } = useGame()
+  const { player } = usePlayer()
 
   // TODO: Validate game room id and players
 
@@ -16,11 +16,11 @@ const Game: React.FC = () => {
     <div className="container">
       <div className={styles.wrapper}>
         <div className={styles.players}>
-          <PlayerAvatar username={user?.nickname || ''} />
+          <PlayerAvatar username={player?.name || ''} />
           <div className={styles.vs}>
             <span>VS</span>
           </div>
-          <PlayerAvatar username={game?.adversary?.name || ''} />
+          <PlayerAvatar username={adversary?.name || ''} />
         </div>
         <div className={styles.turn}>
           <span>É sua vez de jogar!</span>

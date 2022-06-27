@@ -2,23 +2,24 @@ import { Socket } from 'socket.io'
 
 import ServerManager from '@core/server-manager'
 import { Player } from '@utils/models/Player'
+import { Player as PlayerObject } from 'dtos'
 
 type ParamUser = {
-  nickname: string
+  name: string
 }
 
 export const PlayerJoinHandler = (
   socket: Socket,
   user: ParamUser,
-  callback: (error?: string) => void
+  callback: (player?: PlayerObject, error?: string) => void
 ) => {
   try {
-    const player = new Player(user.nickname, socket.id, socket)
+    const player = new Player(user.name, socket.id, socket)
 
     ServerManager.addUser(player)
 
-    callback()
+    callback(player.toObject())
   } catch (err: any) {
-    callback(err.message)
+    callback(undefined, err.message)
   }
 }

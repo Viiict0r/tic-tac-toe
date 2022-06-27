@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const withTM = require('next-transpile-modules')([])
+const withTM = require('next-transpile-modules')(['dtos'])
 const path = require('path')
 
 module.exports = withTM({

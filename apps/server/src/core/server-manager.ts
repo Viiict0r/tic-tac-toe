@@ -3,9 +3,9 @@ import { Express } from 'express'
 import { Event, Server, Socket } from 'socket.io'
 import http from 'http'
 
-import { Events } from '@utils/events'
 import gameMatchJob from 'src/jobs/game-match.job'
-import { Player, PlayerStatus } from '@utils/models/Player'
+import { Player } from '@utils/models/Player'
+import { PlayerStatus, Events } from 'dtos'
 
 type Listener = {
   event: Events | Event

@@ -1,7 +1,7 @@
 import ServerManager from '@core/server-manager'
-import { GameEvents } from '@utils/events'
 import { Game } from '@utils/models/Game'
-import { Player, PlayerSide, PlayerStatus } from '@utils/models/Player'
+import { Player } from '@utils/models/Player'
+import { PlayerSide, PlayerStatus, GameEvents } from 'dtos'
 
 class GameManager {
   private games: Game[] = []

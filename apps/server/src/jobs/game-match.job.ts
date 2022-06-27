@@ -2,7 +2,7 @@ import cron from 'node-cron'
 
 import ServerManager from '@core/server-manager'
 import GameManager from '@core/game/game-manager'
-import { PlayerStatus } from '@utils/models/Player'
+import { PlayerStatus } from 'dtos'
 
 class GameMatchJob {
   public execute() {

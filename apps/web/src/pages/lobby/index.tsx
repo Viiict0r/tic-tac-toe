@@ -3,15 +3,15 @@ import { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 
 import styles from '@styles/Lobby/Lobby.module.scss'
-import { useProfile } from '@hooks/useProfile'
+import { usePlayer } from '@hooks/usePlayer'
 import Logo from '@components/Logo'
 import { Button } from '@components/Button'
 import Router from 'next/router'
 import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import Spinner from '@components/Spinner'
 import { useGame } from '@hooks/useGame'
-import { Events } from '@utils/events'
-import { GameStatus } from '@hooks/useGame/types'
+import { Events, GameStatus } from 'dtos'
+import { useConnection } from '@hooks/useConnection'
 
 enum ScreenState {
   NORMAL = 'normal',
@@ -23,8 +23,9 @@ const Lobby: NextPage = () => {
   const [state, setState] = useState<ScreenState>(ScreenState.NORMAL)
   const [actionLoading, setActionLoading] = useState(false)
 
-  const { user, logout } = useProfile()
-  const { connection, game } = useGame()
+  const { player, logout } = usePlayer()
+  const { game, adversary } = useGame()
+  const { connection } = useConnection()
 
   const handleUserLeave = () => {
     logout()
@@ -35,8 +36,8 @@ const Lobby: NextPage = () => {
     setActionLoading(true)
 
     connection?.emit(
-      Events.SEARCH_MATCH,
-      { nickname: user?.nickname, action: 'enter' },
+      Events.ON_PLAYER_SEARCH_MATCH,
+      { name: player?.name, action: 'enter' },
       (error: string) => {
         if (error) {
           alert(error)
@@ -54,8 +55,8 @@ const Lobby: NextPage = () => {
     setActionLoading(true)
 
     connection?.emit(
-      Events.SEARCH_MATCH,
-      { nickname: user?.nickname, action: 'leave' },
+      Events.ON_PLAYER_SEARCH_MATCH,
+      { name: player?.name, action: 'leave' },
       (error: string) => {
         if (error) {
           alert(error)
@@ -69,20 +70,20 @@ const Lobby: NextPage = () => {
   }
 
   useEffect(() => {
-    if (!user) {
+    if (!player) {
       Router.push('/')
     }
-  }, [user])
+  }, [player])
 
   useEffect(() => {
-    if (game !== null && game.adversary && game.status === GameStatus.WAITING) {
+    if (game !== null && adversary && game.status === GameStatus.WAITING) {
       setState(ScreenState.ADVERSARY_FINDED)
     }
 
-    if (game !== null && game.adversary && game.status === GameStatus.STARTED) {
+    if (game !== null && adversary && game.status === GameStatus.STARTED) {
       Router.push(`/game/${game.id}`)
     }
-  }, [game])
+  }, [game, adversary])
 
   return (
     <div className="container">
@@ -95,7 +96,7 @@ const Lobby: NextPage = () => {
                 'Adversário encontrado!'
               ) : (
                 <>
-                  Bem vindo(a) <b>{user?.nickname}</b>!
+                  Bem vindo(a) <b>{player?.name}</b>!
                 </>
               )}
             </span>
@@ -119,13 +120,13 @@ const Lobby: NextPage = () => {
           {state === ScreenState.ADVERSARY_FINDED && (
             <div className={styles.searching_wrapper}>
               <div className={styles.avatar}>
-                <PlayerAvatar username={user?.nickname || ''} />
+                <PlayerAvatar username={player?.name || ''} />
               </div>
               <div className={styles.separator_vs}>
                 <span>VS</span>
               </div>
               <div className={styles.avatar}>
-                <PlayerAvatar username={game?.adversary?.name || ''} />
+                <PlayerAvatar username={adversary?.name || ''} />
               </div>
               <div className={styles.cancel}>
                 <span>
@@ -138,7 +139,7 @@ const Lobby: NextPage = () => {
           {state === ScreenState.SEARCHING && (
             <div className={styles.searching_wrapper}>
               <div className={styles.avatar}>
-                <PlayerAvatar username={user?.nickname || ''} />
+                <PlayerAvatar username={player?.name || ''} />
               </div>
               <div className={styles.separator}></div>
               <div className={styles.searching}>

@@ -1,0 +1,11 @@
+{
+  "name": "dtos",
+  "version": "0.0.0",
+  "main": "./index.ts",
+  "types": "./index.ts",
+  "license": "MIT",
+  "devDependencies": {
+    "tsconfig": "*",
+    "typescript": "^4.5.2"
+  }
+}

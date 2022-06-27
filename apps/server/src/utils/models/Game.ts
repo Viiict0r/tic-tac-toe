@@ -1,18 +1,7 @@
 import { v4 as uuid } from 'uuid'
 import ServerManager from '@core/server-manager'
-import { Player, PlayerObject } from './Player'
-import { GameEvents } from '@utils/events'
-
-export enum GameStatus {
-  WAITING = 'waiting',
-  STARTED = 'started'
-}
-
-export type GameObject = {
-  id: string
-  players: PlayerObject[]
-  status: GameStatus
-}
+import { Player } from './Player'
+import { GameStatus, Game as GameObject, GameEvents } from 'dtos'
 
 export class Game {
   private readonly id: string

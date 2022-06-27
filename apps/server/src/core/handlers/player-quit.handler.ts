@@ -3,9 +3,9 @@ import { Socket } from 'socket.io'
 import ServerManager from '@core/server-manager'
 
 type ParamUser = {
-  nickname: string
+  name: string
 }
 
 export const PlayerQuitHandler = (socket: Socket, user: ParamUser) => {
-  ServerManager.removeUserByNickname(user.nickname)
+  ServerManager.removeUserByNickname(user.name)
 }

@@ -1,5 +1,5 @@
-import { PlayerSide } from '@hooks/useGame/types'
 import React from 'react'
+import { PlayerSide } from 'dtos'
 import O from '../O'
 import X from '../X'
 

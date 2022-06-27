@@ -2,9 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
-import { useProfile } from '@hooks/useProfile'
-import { useGame } from '@hooks/useGame'
-import { Events } from '@utils/events'
+import { usePlayer } from '@hooks/usePlayer'
 
 import styles from '@styles/Index/Index.module.scss'
 import Router from 'next/router'
@@ -14,35 +12,26 @@ export default function Index() {
   const [nickField, setNickField] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const { connection } = useGame()
-  const { user, setProfile } = useProfile()
+  const { player, connect } = usePlayer()
 
   const handleContinue = () => {
     setLoading(true)
-    connection?.emit(
-      Events.JOIN_LOBBY,
-      { nickname: nickField },
-      (error: string) => {
-        if (error) {
-          alert(error)
-          setLoading(false)
-          return
-        }
 
-        setTimeout(() => {
-          setProfile({
-            nickname: nickField
-          })
-        }, 800)
+    setTimeout(async () => {
+      try {
+        await connect(nickField)
+      } catch (error: any) {
+        alert(error)
+        setLoading(false)
       }
-    )
+    }, 800)
   }
 
   useEffect(() => {
-    if (user) {
+    if (player) {
       Router.push('/lobby')
     }
-  }, [user])
+  }, [player])
 
   const handleInputChange = (event: any) => {
     setNickField(event.target.value)

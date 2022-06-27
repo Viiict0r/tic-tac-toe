@@ -1,22 +1,6 @@
 import { Socket } from 'socket.io'
 import { Game } from './Game'
-
-export enum PlayerStatus {
-  IN_GAME = 'in_game',
-  SEARCHING = 'searching',
-  AWAY = 'away'
-}
-
-export enum PlayerSide {
-  X = 'side_x',
-  O = 'side_o'
-}
-
-export type PlayerObject = {
-  id: string
-  name: string
-  side: PlayerSide | null
-}
+import { PlayerSide, PlayerStatus, Player as PlayerObject } from 'dtos'
 
 export class Player {
   private readonly id: string
