@@ -6,12 +6,13 @@ export class Player {
   private readonly id: string
   private readonly name: string
   private readonly connection: Socket
+  private readonly token: string
   private side: PlayerSide | null
   private status: PlayerStatus
   private canPlay: boolean
   private game: Game | null
 
-  constructor(name: string, id: string, connection: Socket) {
+  constructor(name: string, id: string, connection: Socket, token: string) {
     this.name = name
     this.canPlay = false
     this.game = null
@@ -19,6 +20,7 @@ export class Player {
     this.connection = connection
     this.status = PlayerStatus.AWAY
     this.side = null
+    this.token = token
   }
 
   public userCanPlay() {
@@ -46,6 +48,10 @@ export class Player {
     return this.connection
   }
 
+  public getToken() {
+    return this.token
+  }
+
   public getUsername() {
     return this.name
   }
@@ -62,7 +68,8 @@ export class Player {
     return {
       id: this.id,
       name: this.name,
-      side: this.side
+      side: this.side,
+      token: this.token
     }
   }
 }

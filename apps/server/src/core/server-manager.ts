@@ -48,6 +48,8 @@ class ServerManager {
 
   private registerListeners() {
     this.connection?.on('connection', socket => {
+      console.log('[Debug] #', socket.id, 'connected')
+
       this.listeners.forEach(listener => {
         socket.on(listener.event as string, (...args) =>
           listener.handler(socket, ...args)

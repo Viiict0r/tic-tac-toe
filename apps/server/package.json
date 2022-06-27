@@ -6,6 +6,8 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "express-async-errors": "^3.1.1",
+    "jsonwebtoken": "^8.5.1",
     "node-cron": "^3.0.1",
     "socket.io": "^4.5.1",
     "uuid": "^8.3.2"
@@ -17,12 +19,14 @@
   },
   "devDependencies": {
     "@types/express": "^4.17.13",
+    "@types/jsonwebtoken": "^8.5.8",
     "@types/node": "^17.0.41",
     "@types/node-cron": "^3.0.1",
     "@types/uuid": "^8.3.4",
     "@typescript-eslint/eslint-plugin": "^5.27.1",
     "@typescript-eslint/parser": "^5.27.1",
     "concurrently": "^7.2.1",
+    "dtos": "*",
     "eslint": "^8.0.1",
     "eslint-config-standard": "^17.0.0",
     "eslint-import-resolver-typescript": "^2.7.1",
@@ -33,7 +37,6 @@
     "nodemon": "^2.0.16",
     "ts-node-dev": "^2.0.0",
     "tsconfig": "*",
-    "dtos": "*",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.7.3"
   }

@@ -13,4 +13,5 @@ export type Player = {
   id: string
   name: string
   side: PlayerSide | null
+  token: string
 }
