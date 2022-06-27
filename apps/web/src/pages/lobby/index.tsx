@@ -85,6 +85,8 @@ const Lobby: NextPage = () => {
     }
   }, [game, adversary])
 
+  console.log(player, adversary)
+
   return (
     <div className="container">
       <div className={styles.wrapper}>
@@ -120,13 +122,19 @@ const Lobby: NextPage = () => {
           {state === ScreenState.ADVERSARY_FINDED && (
             <div className={styles.searching_wrapper}>
               <div className={styles.avatar}>
-                <PlayerAvatar username={player?.name || ''} />
+                <PlayerAvatar
+                  username={player?.name || ''}
+                  side={player?.side}
+                />
               </div>
               <div className={styles.separator_vs}>
                 <span>VS</span>
               </div>
               <div className={styles.avatar}>
-                <PlayerAvatar username={adversary?.name || ''} />
+                <PlayerAvatar
+                  username={adversary?.name || ''}
+                  side={adversary?.side}
+                />
               </div>
               <div className={styles.cancel}>
                 <span>

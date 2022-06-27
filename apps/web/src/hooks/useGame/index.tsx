@@ -6,16 +6,18 @@ import React, {
   useMemo
 } from 'react'
 
+import { useRouter } from 'next/router'
+
 import Logo from '@components/Logo'
 import Spinner from '@components/Spinner'
 import { useConnection } from '@hooks/useConnection'
-import { GameEvents, Game, Player, PlayerSide } from 'dtos'
+import { GameEvents, Game, Player } from 'dtos'
 
 import styles from './styles.module.scss'
+import { usePlayer } from '@hooks/usePlayer'
 
 type IGameContext = {
   game: Game | null
-  side: PlayerSide | null
   adversary: Player | null
 }
 
@@ -23,9 +25,10 @@ const GameContext = createContext({} as IGameContext)
 
 export const GameProvider: React.FC = ({ children }) => {
   const [game, setGame] = useState<Game | null>(null)
-  const [side, setSide] = useState<PlayerSide | null>(null)
 
   const { connection, isConnected } = useConnection()
+  const { setPlayer } = usePlayer()
+  const router = useRouter()
 
   const adversary = useMemo(() => {
     return game?.players.find(p => p.id !== connection?.id)
@@ -39,19 +42,21 @@ export const GameProvider: React.FC = ({ children }) => {
       setGame(game)
 
       const self = game.players.find(p => p.id === connection?.id)
-      setSide(self?.side || null)
+
+      setPlayer(self!)
     })
 
     connection!.on(GameEvents.ON_GAME_START, (game: Game) => {
-      // TODO: Handle game start event
+      setGame(game)
+
+      router.push(`/game/${game.id}`)
     })
-  }, [connection, isConnected])
+  }, [connection, isConnected, setPlayer, router])
 
   return (
     <GameContext.Provider
       value={{
         game,
-        side,
         adversary: adversary || null
       }}
     >

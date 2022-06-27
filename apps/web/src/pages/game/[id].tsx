@@ -1,14 +1,25 @@
-import Arena from '@components/Arena'
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useRouter } from 'next/router'
 
-import styles from '@styles/Game/Game.module.scss'
+import Arena from '@components/Arena'
 import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import { useGame } from '@hooks/useGame'
 import { usePlayer } from '@hooks/usePlayer'
 
+import styles from '@styles/Game/Game.module.scss'
+
 const Game: React.FC = () => {
+  const router = useRouter()
   const { game, adversary } = useGame()
   const { player } = usePlayer()
+
+  const { id: gameId } = router.query
+
+  useEffect(() => {
+    if (!game || game.id !== gameId) {
+      router.push('/')
+    }
+  }, [game, gameId, router])
 
   // TODO: Validate game room id and players
 

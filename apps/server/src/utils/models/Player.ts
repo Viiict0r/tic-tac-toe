@@ -69,7 +69,7 @@ export class Player {
       id: this.id,
       name: this.name,
       side: this.side,
-      token: this.token
+      token: 'secret'
     }
   }
 }

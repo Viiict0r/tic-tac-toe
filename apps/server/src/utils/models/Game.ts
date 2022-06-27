@@ -31,6 +31,8 @@ export class Game {
 
     console.log('[Debug] Game #', this.id, 'started.')
 
+    this.status = GameStatus.STARTED
+
     ServerManager.getConnection()
       ?.to(this.getId())
       .emit(GameEvents.ON_GAME_START, this.toObject())

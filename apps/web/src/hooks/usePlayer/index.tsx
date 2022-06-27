@@ -12,6 +12,8 @@ import { useConnection } from '@hooks/useConnection'
 
 type IPlayerContext = {
   player: Player | null
+  token: string
+  setPlayer: (player: Player) => void
   logout: () => void
   connect: (data: Pick<Player, 'name' | 'token'>) => Promise<void>
 }
@@ -21,6 +23,7 @@ const STORAGE_KEY = '@tictactoe:player'
 
 export const PlayerProvider: React.FC = ({ children }) => {
   const [player, setPlayer] = useState<Player | null>(null)
+  const [token, setToken] = useState('')
 
   const { connection } = useConnection()
 
@@ -36,6 +39,7 @@ export const PlayerProvider: React.FC = ({ children }) => {
             }
 
             setPlayer(player || null)
+            setToken(player!.token)
             resolve()
           }
         )
@@ -81,7 +85,13 @@ export const PlayerProvider: React.FC = ({ children }) => {
 
   return (
     <PlayerContext.Provider
-      value={{ connect: handleUserConnect, logout: disconnectUser, player }}
+      value={{
+        connect: handleUserConnect,
+        logout: disconnectUser,
+        player,
+        setPlayer,
+        token
+      }}
     >
       {children}
     </PlayerContext.Provider>
