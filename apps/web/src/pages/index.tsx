@@ -3,6 +3,7 @@ import { Input } from '@components/Input'
 import { Button } from '@components/Button'
 
 import { usePlayer } from '@hooks/usePlayer'
+import { api } from '@services/axios-api'
 
 import styles from '@styles/Index/Index.module.scss'
 import Router from 'next/router'
@@ -10,21 +11,37 @@ import Logo from '@components/Logo'
 
 export default function Index() {
   const [nickField, setNickField] = useState('')
+  const [error, setError] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
 
   const { player, connect } = usePlayer()
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     setLoading(true)
 
-    setTimeout(async () => {
-      try {
-        await connect(nickField)
-      } catch (error: any) {
-        alert(error)
-        setLoading(false)
+    try {
+      const response = await api.post('/lobby', {
+        name: nickField
+      })
+
+      const { token } = response.data
+
+      setTimeout(async () => {
+        await connect({ name: nickField, token })
+      }, 900)
+    } catch (error: any) {
+      console.log(error)
+      setLoading(false)
+
+      if (error.response?.data?.message) {
+        setError(error.response.data.message)
+        return
       }
-    }, 800)
+
+      if (typeof error === 'string') {
+        setError(error)
+      }
+    }
   }
 
   useEffect(() => {
@@ -34,6 +51,8 @@ export default function Index() {
   }, [player])
 
   const handleInputChange = (event: any) => {
+    if (error) setError(null)
+
     setNickField(event.target.value)
   }
 
@@ -46,11 +65,14 @@ export default function Index() {
         <div className={styles.input__wrapper}>
           <span>Para continuar, informe um nickname:</span>
           <Input
-            placeholder="Ex.: Viiict0r"
+            placeholder="Ex.: Jorge123"
             onChange={handleInputChange}
+            className={styles.input_container}
             value={nickField}
+            hasError={!!error}
+            error={error}
           />
-          <Button disabled={loading} onClick={handleContinue}>
+          <Button disabled={loading} loading={loading} onClick={handleContinue}>
             Continuar
           </Button>
         </div>

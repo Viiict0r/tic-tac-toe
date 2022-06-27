@@ -13,7 +13,7 @@ import { useConnection } from '@hooks/useConnection'
 type IPlayerContext = {
   player: Player | null
   logout: () => void
-  connect: (nickname: string) => Promise<void>
+  connect: (data: Pick<Player, 'name' | 'token'>) => Promise<void>
 }
 
 const PlayerContext = createContext({} as IPlayerContext)
@@ -25,7 +25,7 @@ export const PlayerProvider: React.FC = ({ children }) => {
   const { connection } = useConnection()
 
   const connectToLobby = useCallback(
-    (player: Pick<Player, 'name'>): Promise<void> =>
+    (player: Pick<Player, 'name' | 'token'>): Promise<void> =>
       new Promise((resolve, reject) => {
         connection?.emit(
           Events.ON_PLAYER_JOIN_LOBBY,
@@ -43,12 +43,15 @@ export const PlayerProvider: React.FC = ({ children }) => {
     [connection]
   )
 
-  const handleUserConnect = async (nickname: string) => {
-    await connectToLobby({ name: nickname })
+  const handleUserConnect = async ({
+    name,
+    token
+  }: Pick<Player, 'name' | 'token'>) => {
+    await connectToLobby({ name, token })
 
     window.localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ name: nickname } as Pick<Player, 'name'>)
+      JSON.stringify({ name, token } as Pick<Player, 'name' | 'token'>)
     )
   }
 
@@ -65,7 +68,12 @@ export const PlayerProvider: React.FC = ({ children }) => {
     const localStorage = window.localStorage.getItem(STORAGE_KEY)
 
     if (localStorage) {
-      const usr = JSON.parse(localStorage) as Pick<Player, 'name'>
+      const usr = JSON.parse(localStorage) as Pick<Player, 'name' | 'token'>
+
+      if (!usr.name || !usr.token) {
+        window.localStorage.removeItem(STORAGE_KEY)
+        return
+      }
 
       connectToLobby(usr)
     }

@@ -16,11 +16,14 @@ const Game: React.FC = () => {
     <div className="container">
       <div className={styles.wrapper}>
         <div className={styles.players}>
-          <PlayerAvatar username={player?.name || ''} />
+          <PlayerAvatar username={player?.name || ''} side={player?.side} />
           <div className={styles.vs}>
             <span>VS</span>
           </div>
-          <PlayerAvatar username={adversary?.name || ''} />
+          <PlayerAvatar
+            username={adversary?.name || ''}
+            side={adversary?.side}
+          />
         </div>
         <div className={styles.turn}>
           <span>É sua vez de jogar!</span>

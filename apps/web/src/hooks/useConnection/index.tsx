@@ -12,7 +12,7 @@ export const ConnectionProvider: React.FC = ({ children }) => {
   const [connection, setConnection] = useState<Socket | null>(null)
 
   useEffect(() => {
-    const connection = io('localhost:3333')
+    const connection = io(process.env.NEXT_PUBLIC_API_URL as string)
 
     setTimeout(() => {
       setConnection(connection)

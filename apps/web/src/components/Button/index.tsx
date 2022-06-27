@@ -1,4 +1,5 @@
 import Spinner from '@components/Spinner'
+import cx from '@utils/cx'
 import React, { ButtonHTMLAttributes } from 'react'
 
 import styles from './styles.module.scss'
@@ -19,9 +20,11 @@ export const Button: React.FC<Props> = ({
   return (
     <button
       disabled={disabled || loading}
-      className={`${styles.button__base} ${styles[`button__${size}`]} ${
-        loading ? styles.loading : ''
-      }`}
+      className={cx([
+        styles.button__base,
+        styles[`button__${size}`],
+        loading && styles.loading
+      ])}
       {...rest}
     >
       {children}
