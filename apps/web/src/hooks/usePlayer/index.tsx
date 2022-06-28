@@ -28,18 +28,18 @@ export const PlayerProvider: React.FC = ({ children }) => {
   const { connection } = useConnection()
 
   const connectToLobby = useCallback(
-    (player: Pick<Player, 'name' | 'token'>): Promise<void> =>
+    (paramPlayer: Pick<Player, 'name' | 'token'>): Promise<void> =>
       new Promise((resolve, reject) => {
         connection?.emit(
           Events.ON_PLAYER_JOIN_LOBBY,
-          player,
+          paramPlayer,
           (player?: Player, error?: string) => {
             if (!player && error) {
               reject(error)
             }
 
             setPlayer(player || null)
-            setToken(player!.token)
+            setToken(paramPlayer.token)
             resolve()
           }
         )
@@ -53,6 +53,7 @@ export const PlayerProvider: React.FC = ({ children }) => {
   }: Pick<Player, 'name' | 'token'>) => {
     await connectToLobby({ name, token })
 
+    setToken(token)
     window.localStorage.setItem(
       STORAGE_KEY,
       JSON.stringify({ name, token } as Pick<Player, 'name' | 'token'>)

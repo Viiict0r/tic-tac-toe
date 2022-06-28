@@ -1,6 +1,6 @@
 import { Socket } from 'socket.io'
-import { Game } from './Game'
 import { PlayerSide, PlayerStatus, Player as PlayerObject } from 'dtos'
+import GameManager from '@core/game/game-manager'
 
 export class Player {
   private readonly id: string
@@ -10,12 +10,12 @@ export class Player {
   private side: PlayerSide | null
   private status: PlayerStatus
   private canPlay: boolean
-  private game: Game | null
+  private currentGameId: string | null
 
   constructor(name: string, id: string, connection: Socket, token: string) {
     this.name = name
     this.canPlay = false
-    this.game = null
+    this.currentGameId = null
     this.id = id
     this.connection = connection
     this.status = PlayerStatus.AWAY
@@ -33,7 +33,13 @@ export class Player {
   }
 
   public getCurrentGame() {
-    return this.game
+    return GameManager.getAllCurrentGames().find(
+      game => game.getId() === this.currentGameId
+    )
+  }
+
+  public setCurrentGame(gameId: string) {
+    this.currentGameId = gameId
   }
 
   public getStatus() {

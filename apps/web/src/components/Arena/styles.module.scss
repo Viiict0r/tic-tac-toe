@@ -8,13 +8,6 @@
   grid-gap: 4px;
   background-color: rgba(255, 255, 255, 0.2);
 
-  // > div {
-  //   background-color: $dark;
-  //   display: flex;
-  //   align-items: center;
-  //   justify-content: center;
-  // }
-
   .pos {
     background-color: $dark;
     width: 100%;
@@ -24,9 +17,13 @@
     justify-content: center;
     transition: background 150ms ease-in-out;
 
-    &:hover {
+    &:hover:not(.pos__disabled) {
       background-color: rgba(45, 64, 89, 0.7);
       cursor: pointer;
     }
+  }
+
+  .pos__disabled {
+    cursor: not-allowed;
   }
 }

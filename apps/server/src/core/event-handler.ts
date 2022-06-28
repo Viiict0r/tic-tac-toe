@@ -4,6 +4,7 @@ import { Events } from 'dtos'
 import { PlayerJoinHandler } from './handlers/player-join.handler'
 import { PlayerMatchQueue } from './handlers/player-match-queue.handler'
 import { PlayerQuitHandler } from './handlers/player-quit.handler'
+import { PlayerPlayHandler } from './handlers/player-play.handler'
 
 class EventHandler {
   public registerHandlers() {
@@ -20,6 +21,7 @@ class EventHandler {
       Events.ON_PLAYER_SEARCH_MATCH,
       PlayerMatchQueue
     )
+    ServerManager.registerListener(Events.MAKE_PLAY, PlayerPlayHandler)
   }
 }
 

@@ -16,6 +16,8 @@ class GameManager {
       // Set player play side
       player.setSide(index === 0 ? PlayerSide.X : PlayerSide.O)
 
+      player.setCurrentGame(game.getId())
+
       // Join on game room
       await player.getConnection().join(game.getId())
     })
