@@ -9,7 +9,9 @@
       "@components/*": ["src/components/*"],
       "@styles/*": ["src/styles/*"],
       "@utils/*": ["src/utils/*"],
-      "@services/*": ["src/services/*"]
+      "@services/*": ["src/services/*"],
+      "@assets/*": ["src/assets/*"],
+      "@lib/*": ["src/lib/*"]
     }
   }
 }

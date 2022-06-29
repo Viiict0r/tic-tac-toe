@@ -12,6 +12,7 @@ export enum PlayerSide {
 export type Player = {
   id: string
   name: string
+  avatar: string
   side: PlayerSide | null
   token: string
 }

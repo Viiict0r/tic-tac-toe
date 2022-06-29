@@ -10,8 +10,9 @@ import Router from 'next/router'
 import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import Spinner from '@components/Spinner'
 import { useGame } from '@hooks/useGame'
-import { Events, GameStatus } from 'dtos'
+import { Events } from 'dtos'
 import { useConnection } from '@hooks/useConnection'
+import { AvatarKey } from '@components/Avatar'
 
 enum ScreenState {
   NORMAL = 'normal',
@@ -24,7 +25,7 @@ const Lobby: NextPage = () => {
   const [actionLoading, setActionLoading] = useState(false)
 
   const { player, logout } = usePlayer()
-  const { game, adversary } = useGame()
+  const { adversary } = useGame()
   const { connection } = useConnection()
 
   const handleUserLeave = () => {
@@ -75,18 +76,6 @@ const Lobby: NextPage = () => {
     }
   }, [player])
 
-  useEffect(() => {
-    if (game !== null && adversary && game.status === GameStatus.WAITING) {
-      setState(ScreenState.ADVERSARY_FINDED)
-    }
-
-    if (game !== null && adversary && game.status === GameStatus.STARTED) {
-      Router.push(`/game/${game.id}`)
-    }
-  }, [game, adversary])
-
-  console.log(player, adversary)
-
   return (
     <div className="container">
       <div className={styles.wrapper}>
@@ -123,6 +112,7 @@ const Lobby: NextPage = () => {
             <div className={styles.searching_wrapper}>
               <div className={styles.avatar}>
                 <PlayerAvatar
+                  avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
                   username={player?.name || ''}
                   side={player?.side}
                 />
@@ -132,6 +122,7 @@ const Lobby: NextPage = () => {
               </div>
               <div className={styles.avatar}>
                 <PlayerAvatar
+                  avatar={(adversary?.avatar as AvatarKey) || 'avatar-batman'}
                   username={adversary?.name || ''}
                   side={adversary?.side}
                 />
@@ -147,7 +138,10 @@ const Lobby: NextPage = () => {
           {state === ScreenState.SEARCHING && (
             <div className={styles.searching_wrapper}>
               <div className={styles.avatar}>
-                <PlayerAvatar username={player?.name || ''} />
+                <PlayerAvatar
+                  avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
+                  username={player?.name || ''}
+                />
               </div>
               <div className={styles.separator}></div>
               <div className={styles.searching}>

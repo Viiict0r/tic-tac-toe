@@ -1,0 +1,50 @@
+@import "colors";
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  > div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.form {
+  max-width: 500px;
+  text-align: center;
+
+  .form__input_wrapper {
+    margin: 20px 0;
+
+    span {
+      font-size: 18px;
+    }
+
+    .form__input_wraper___input {
+      padding: 20px 0 10px;
+    }
+  }
+
+  .form__avatar_wrapper {
+    padding: 0 0 30px;
+    display: grid;
+    grid-template-columns: repeat(5, 75px);
+    grid-template-rows: 75px;
+    column-gap: 20px;
+    justify-content: center;
+
+    .form__avatar_wrapper__error {
+      margin-top: 15px;
+      grid-column: 1 / -1;
+
+      span {
+        color: $red;
+        font-size: 14px;
+      }
+    }
+  }
+}

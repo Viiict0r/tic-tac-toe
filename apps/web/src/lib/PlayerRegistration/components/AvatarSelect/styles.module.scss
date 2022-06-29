@@ -1,0 +1,29 @@
+@import "colors";
+
+.container {
+  width: 70px;
+  height: 70px;
+  border-radius: 999px;
+  border: 3px solid transparent;
+  transition: all 150ms ease-in-out;
+  cursor: pointer;
+  overflow: hidden;
+
+  svg {
+    transition: all 150ms ease-in-out;
+  }
+
+  &:hover:not(.selected) {
+    svg {
+      transform: scale(1.1);
+    }
+  }
+
+  &.selected {
+    border-color: $yellow;
+  }
+
+  &.errored {
+    border-color: $red;
+  }
+}

@@ -5,6 +5,7 @@ import GameManager from '@core/game/game-manager'
 export class Player {
   private readonly id: string
   private readonly name: string
+  private readonly avatar: string
   private readonly connection: Socket
   private readonly token: string
   private side: PlayerSide | null
@@ -12,7 +13,13 @@ export class Player {
   private canPlay: boolean
   private currentGameId: string | null
 
-  constructor(name: string, id: string, connection: Socket, token: string) {
+  constructor(
+    name: string,
+    id: string,
+    connection: Socket,
+    token: string,
+    avatar: string
+  ) {
     this.name = name
     this.canPlay = false
     this.currentGameId = null
@@ -21,6 +28,7 @@ export class Player {
     this.status = PlayerStatus.AWAY
     this.side = null
     this.token = token
+    this.avatar = avatar
   }
 
   public userCanPlay() {
@@ -66,6 +74,10 @@ export class Player {
     return this.side
   }
 
+  public getAvatar() {
+    return this.avatar
+  }
+
   public setSide(side: PlayerSide) {
     this.side = side
   }
@@ -75,6 +87,7 @@ export class Player {
       id: this.id,
       name: this.name,
       side: this.side,
+      avatar: this.avatar,
       token: 'secret'
     }
   }

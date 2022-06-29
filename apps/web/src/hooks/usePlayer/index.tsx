@@ -15,7 +15,7 @@ type IPlayerContext = {
   token: string
   setPlayer: (player: Player) => void
   logout: () => void
-  connect: (data: Pick<Player, 'name' | 'token'>) => Promise<void>
+  connect: (data: Pick<Player, 'name' | 'token' | 'avatar'>) => Promise<void>
 }
 
 const PlayerContext = createContext({} as IPlayerContext)
@@ -28,7 +28,7 @@ export const PlayerProvider: React.FC = ({ children }) => {
   const { connection } = useConnection()
 
   const connectToLobby = useCallback(
-    (paramPlayer: Pick<Player, 'name' | 'token'>): Promise<void> =>
+    (paramPlayer: Pick<Player, 'name' | 'token' | 'avatar'>): Promise<void> =>
       new Promise((resolve, reject) => {
         connection?.emit(
           Events.ON_PLAYER_JOIN_LOBBY,
@@ -49,14 +49,18 @@ export const PlayerProvider: React.FC = ({ children }) => {
 
   const handleUserConnect = async ({
     name,
-    token
-  }: Pick<Player, 'name' | 'token'>) => {
-    await connectToLobby({ name, token })
+    token,
+    avatar
+  }: Pick<Player, 'name' | 'token' | 'avatar'>) => {
+    await connectToLobby({ name, avatar, token })
 
     setToken(token)
     window.localStorage.setItem(
       STORAGE_KEY,
-      JSON.stringify({ name, token } as Pick<Player, 'name' | 'token'>)
+      JSON.stringify({ name, token, avatar } as Pick<
+        Player,
+        'name' | 'token' | 'avatar'
+      >)
     )
   }
 
@@ -66,6 +70,7 @@ export const PlayerProvider: React.FC = ({ children }) => {
     connection?.emit(Events.ON_PLAYER_LEAVE_LOBBY, player)
 
     setPlayer(null)
+    setToken('')
     window.localStorage.removeItem(STORAGE_KEY)
   }
 
@@ -73,7 +78,10 @@ export const PlayerProvider: React.FC = ({ children }) => {
     const localStorage = window.localStorage.getItem(STORAGE_KEY)
 
     if (localStorage) {
-      const usr = JSON.parse(localStorage) as Pick<Player, 'name' | 'token'>
+      const usr = JSON.parse(localStorage) as Pick<
+        Player,
+        'name' | 'token' | 'avatar'
+      >
 
       if (!usr.name || !usr.token) {
         window.localStorage.removeItem(STORAGE_KEY)

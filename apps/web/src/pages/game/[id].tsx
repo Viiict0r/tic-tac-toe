@@ -7,6 +7,7 @@ import { useGame } from '@hooks/useGame'
 import { usePlayer } from '@hooks/usePlayer'
 
 import styles from '@styles/Game/Game.module.scss'
+import { AvatarKey } from '@components/Avatar'
 
 const Game: React.FC = () => {
   const router = useRouter()
@@ -27,13 +28,18 @@ const Game: React.FC = () => {
     <div className="container">
       <div className={styles.wrapper}>
         <div className={styles.players}>
-          <PlayerAvatar username={player?.name || ''} side={player?.side} />
+          <PlayerAvatar
+            username={player?.name || ''}
+            side={player?.side}
+            avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
+          />
           <div className={styles.vs}>
             <span>VS</span>
           </div>
           <PlayerAvatar
             username={adversary?.name || ''}
             side={adversary?.side}
+            avatar={(adversary?.avatar as AvatarKey) || 'avatar-batman'}
           />
         </div>
         <div className={styles.turn}>
