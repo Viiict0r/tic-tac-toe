@@ -1,4 +1,5 @@
 @import "colors";
+@import "mixins";
 
 .container {
   display: flex;
@@ -35,6 +36,7 @@
     grid-template-columns: repeat(5, 75px);
     grid-template-rows: 75px;
     column-gap: 20px;
+    row-gap: 20px;
     justify-content: center;
 
     .form__avatar_wrapper__error {
@@ -45,6 +47,19 @@
         color: $red;
         font-size: 14px;
       }
+    }
+
+    @include respond-to('sm') {
+      grid-template-columns: repeat(5, 65px);
+      grid-template-rows: 65px;
+      column-gap: 10px;
+      row-gap: 10px;
+    }
+
+    @include respond-to('xsm') {
+      grid-template-columns: repeat(3, 65px);
+      row-gap: 20px;
+      column-gap: 20px;
     }
   }
 }

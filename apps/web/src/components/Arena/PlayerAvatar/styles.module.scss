@@ -1,4 +1,5 @@
 @import "colors";
+@import "mixins";
 
 .container {
   text-align: center;
@@ -34,6 +35,12 @@
       border: 3px solid $yellow;
       border-color: $yellow;
     }
+
+    @include respond-to('md') {
+      width: 55px;
+      height: 55px;
+      margin-bottom: 5px;
+    }
   }
 
   .nickname {
@@ -58,6 +65,16 @@
     span {
       font-size: 20px !important;
       line-height: 0;
+    }
+
+    @include respond-to('md') {
+      width: 30px;
+      height: 30px;
+
+      span {
+        font-size: 18px !important;
+        line-height: 0;
+      }
     }
   }
 }

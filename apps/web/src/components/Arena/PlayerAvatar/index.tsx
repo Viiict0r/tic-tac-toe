@@ -25,7 +25,13 @@ const PlayerAvatar: React.FC<Props> = ({
   showCrown = false
 }) => {
   return (
-    <div className={cx([styles.container, disabled && styles.disabled])}>
+    <div
+      className={cx([
+        'player-avatar',
+        styles.container,
+        disabled && styles.disabled
+      ])}
+    >
       {showCrown && (
         <div className={styles.crown}>
           <Crown />

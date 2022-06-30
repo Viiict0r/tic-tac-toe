@@ -52,6 +52,12 @@
     grid-template-columns: 1fr 100px 1fr;
     align-items: flex-end;
     column-gap: 20px;
+
+    :global {
+      .player-avatar {
+        justify-self: center;
+      }
+    }
   }
 
   .vs {

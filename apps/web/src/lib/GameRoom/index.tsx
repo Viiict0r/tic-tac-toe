@@ -20,6 +20,29 @@ const GameRoom: React.FC = () => {
         <Logo />
       </div>
       <div className={styles.container}>
+        <div className={styles.mobile_players}>
+          <div>
+            <PlayerAvatar
+              username={player?.name || ''}
+              side={player?.side}
+              avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
+              disabled={!canPlay}
+            />
+          </div>
+
+          <div className={styles.vs}>
+            <span>VS</span>
+          </div>
+
+          <div>
+            <PlayerAvatar
+              username={adversary?.name || ''}
+              side={adversary?.side}
+              avatar={(adversary?.avatar as AvatarKey) || 'avatar-batman'}
+              disabled={canPlay}
+            />
+          </div>
+        </div>
         <div className={styles.game_container}>
           <div className={styles.game_turn}>
             {!!canPlay && (

@@ -1,4 +1,5 @@
 @import 'colors';
+@import 'mixins';
 
 .x {
   font-size: 80px;
@@ -14,5 +15,9 @@
 
   &.win {
     color: $green;
+  }
+
+  @include respond-to('sm') {
+    font-size: 60px;
   }
 }
