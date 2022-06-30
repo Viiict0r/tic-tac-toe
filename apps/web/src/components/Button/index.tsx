@@ -6,6 +6,7 @@ import styles from './styles.module.scss'
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
   size?: 'small' | 'big'
+  variant?: 'default' | 'danger'
   loading?: boolean
   disabled?: boolean
 }
@@ -13,6 +14,7 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
 export const Button: React.FC<Props> = ({
   children,
   size = 'small',
+  variant = 'default',
   loading = false,
   disabled = false,
   ...rest
@@ -23,6 +25,7 @@ export const Button: React.FC<Props> = ({
       className={cx([
         styles.button__base,
         styles[`button__${size}`],
+        styles[`button__variant__${variant}`],
         loading && styles.loading
       ])}
       {...rest}

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ArenaPositions, ArenaPositionValue } from 'dtos'
+import { ArenaPositions, ArenaPositionValue, GameStatus } from 'dtos'
 
 import O from './O'
 import X from './X'
@@ -7,6 +7,8 @@ import X from './X'
 import styles from './styles.module.scss'
 import cx from '@utils/cx'
 import { useGame } from '@hooks/useGame'
+import { FinishScreen } from './FinishScreen'
+import { usePlayer } from '@hooks/usePlayer'
 
 const positions: ArenaPositions[] = [
   'A1',
@@ -21,10 +23,12 @@ const positions: ArenaPositions[] = [
 ]
 
 const Arena: React.FC = () => {
-  const { game, canPlay, play } = useGame()
+  const { game, canPlay, play, finishedPayload } = useGame()
+  const { player } = usePlayer()
 
   const positionItem = (pos: ArenaPositions) => {
     const arenaPlays = game?.arena?.plays
+    const win_combination = finishedPayload?.combination?.split('_')
 
     if (!arenaPlays || arenaPlays.length <= 0) {
       return null
@@ -35,10 +39,30 @@ const Arena: React.FC = () => {
     if (!posValue) return null
 
     if (posValue.value === ArenaPositionValue.O) {
+      if (finishedPayload) {
+        if (
+          win_combination &&
+          win_combination.find(pos => pos === posValue.position)
+        ) {
+          return <O green />
+        }
+        return <O disabled />
+      }
+
       return <O />
     }
 
     if (posValue.value === ArenaPositionValue.X) {
+      if (finishedPayload) {
+        if (
+          win_combination &&
+          win_combination.find(pos => pos === posValue.position)
+        ) {
+          return <X green />
+        }
+        return <X disabled />
+      }
+
       return <X />
     }
 
@@ -51,18 +75,68 @@ const Arena: React.FC = () => {
     play(position)
   }
 
+  const gameResult = () => {
+    if (finishedPayload) {
+      if (finishedPayload.winner) {
+        if (finishedPayload.winner.name === player?.name) {
+          return 'win'
+        }
+        return 'lose'
+      }
+
+      return 'tie'
+    }
+
+    return null
+  }
+
+  console.log(game)
+
   return (
-    <div className={styles.container}>
-      {positions.map(pos => (
+    <>
+      {game?.status === GameStatus.FINISHED && finishedPayload && (
+        <FinishScreen
+          state={gameResult() || 'tie'}
+          winner={finishedPayload.winner}
+        />
+      )}
+      <div className={styles.container}>
         <div
-          className={cx([styles.pos, !canPlay && styles.pos__disabled])}
-          key={pos}
-          onClick={() => handlePlay(pos)}
+          className={cx([
+            styles.win__delimiter__container,
+            !finishedPayload && styles.hidden
+          ])}
         >
-          {positionItem(pos)}
+          <div className={styles.win__delimiter}>
+            <div
+              className={cx([
+                styles.win__delimiter___vertical,
+                finishedPayload && styles.draw,
+                finishedPayload?.combination &&
+                  styles[finishedPayload.combination]
+              ])}
+            ></div>
+            <div
+              className={cx([
+                styles.win__delimiter___horizontal,
+                finishedPayload && styles.draw,
+                finishedPayload?.combination &&
+                  styles[finishedPayload.combination]
+              ])}
+            ></div>
+          </div>
         </div>
-      ))}
-    </div>
+        {positions.map(pos => (
+          <div
+            className={cx([styles.pos, !canPlay && styles.pos__disabled])}
+            key={pos}
+            onClick={() => handlePlay(pos)}
+          >
+            {positionItem(pos)}
+          </div>
+        ))}
+      </div>
+    </>
   )
 }
 

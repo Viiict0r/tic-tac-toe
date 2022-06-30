@@ -1,7 +1,12 @@
 import { v4 as uuid } from 'uuid'
 import ServerManager from '@core/server-manager'
 import { Player } from './Player'
-import { GameStatus, Game as GameObject, GameEvents } from 'dtos'
+import {
+  GameStatus,
+  Game as GameObject,
+  GameEvents,
+  GameFinishPayload
+} from 'dtos'
 import { Arena } from './Arena'
 
 export class Game {
@@ -67,6 +72,28 @@ export class Game {
     ServerManager.getConnection()
       ?.to(this.getId())
       .emit(GameEvents.ON_GAME_START, this.toObject())
+  }
+
+  public finish(winner: Player | null, combination: string | null) {
+    // Finish the game
+    // TODO: Implementar empate
+    console.log('[Debug] Game #', this.id, 'finished.')
+
+    this.status = GameStatus.FINISHED
+
+    ServerManager.getConnection()
+      ?.to(this.id)
+      .emit(GameEvents.ON_GAME_WIN, {
+        winner: winner?.toObject(),
+        combination,
+        game: this.toObject()
+      } as GameFinishPayload)
+
+    this.players.forEach(player => {
+      player.getConnection().leave(this.id)
+    })
+
+    // Destroy this instance
   }
 
   public toObject(): GameObject {

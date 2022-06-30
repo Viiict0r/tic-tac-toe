@@ -2,7 +2,8 @@ import { Player } from "./Player"
 
 export enum GameStatus {
   WAITING = 'waiting',
-  STARTED = 'started'
+  STARTED = 'started',
+  FINISHED = 'finished'
 }
 
 export enum ArenaPositionValue {
@@ -30,4 +31,10 @@ export type Game = {
   players: Player[]
   arena?: Arena
   turn: string
+}
+
+export type GameFinishPayload = {
+  winner?: Player
+  combination?: string
+  game: Game
 }

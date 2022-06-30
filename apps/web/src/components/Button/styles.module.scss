@@ -5,20 +5,9 @@
   position: relative;
   border: 1px solid transparent;
   border-radius: 999px;
-  color: $white;
   transition: all 200ms ease-in-out;
   text-transform: uppercase;
   cursor: pointer;
-  background-color: rgba(255, 255, 255, 0.1);
-
-  &:hover:not(:disabled, :active) {
-    background-color: rgba(255, 255, 255, 0.2);
-  }
-
-  &:active:not(:disabled) {
-    border-color: rgba(255, 255, 255, 0.3);
-    background-color: rgba(255, 255, 255, 0.1);
-  }
 
   &:disabled {
     cursor: not-allowed;
@@ -43,6 +32,33 @@
   padding: 12px 22px;
   font-size: 12px;
   font-weight: 600;
+}
+
+.button__variant__danger {
+  background-color: rgba($red_rgb, 0.2);
+  color: $red;
+
+  &:hover:not(:disabled, :active) {
+    background-color: rgba($red_rgb, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    border-color: rgba($red_rgb, 0.5);
+  }
+}
+
+.button__variant__default {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: $white;
+
+  &:hover:not(:disabled, :active) {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+
+  &:active:not(:disabled) {
+    border-color: rgba(255, 255, 255, 0.3);
+    background-color: rgba(255, 255, 255, 0.1);
+  }
 }
 
 .button__loading_spinner {

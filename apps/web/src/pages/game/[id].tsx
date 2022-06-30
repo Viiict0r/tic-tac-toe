@@ -1,13 +1,11 @@
 import React, { useEffect } from 'react'
 import { useRouter } from 'next/router'
+import Head from 'next/head'
 
-import Arena from '@components/Arena'
-import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import { useGame } from '@hooks/useGame'
-import { usePlayer } from '@hooks/usePlayer'
 
-import styles from '@styles/Game/Game.module.scss'
-import { AvatarKey } from '@components/Avatar'
+import GameRoom from '@lib/GameRoom'
+import { usePlayer } from '@hooks/usePlayer'
 
 const Game: React.FC = () => {
   const router = useRouter()
@@ -25,29 +23,16 @@ const Game: React.FC = () => {
   // TODO: Validate game room id and players
 
   return (
-    <div className="container">
-      <div className={styles.wrapper}>
-        <div className={styles.players}>
-          <PlayerAvatar
-            username={player?.name || ''}
-            side={player?.side}
-            avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
-          />
-          <div className={styles.vs}>
-            <span>VS</span>
-          </div>
-          <PlayerAvatar
-            username={adversary?.name || ''}
-            side={adversary?.side}
-            avatar={(adversary?.avatar as AvatarKey) || 'avatar-batman'}
-          />
-        </div>
-        <div className={styles.turn}>
-          <span>É sua vez de jogar!</span>
-        </div>
-        <Arena />
+    <>
+      <Head>
+        <title>
+          {player?.name} vs {adversary?.name} | Tic Tac Toe
+        </title>
+      </Head>
+      <div className="container">
+        <GameRoom />
       </div>
-    </div>
+    </>
   )
 }
 

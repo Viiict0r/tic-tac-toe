@@ -9,5 +9,6 @@ export enum Events {
 export enum GameEvents {
   ON_GAME_START = 'game_start',
   ON_MATCH_FIND = 'match_find',
-  ON_USER_PLAY = 'user_play'
+  ON_USER_PLAY = 'user_play',
+  ON_GAME_WIN = 'game_win'
 }

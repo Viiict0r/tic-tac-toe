@@ -11,7 +11,14 @@ import { useRouter } from 'next/router'
 import Logo from '@components/Logo'
 import Spinner from '@components/Spinner'
 import { useConnection } from '@hooks/useConnection'
-import { GameEvents, Game, Player, ArenaPositions, Events } from 'dtos'
+import {
+  GameEvents,
+  Game,
+  Player,
+  ArenaPositions,
+  Events,
+  GameFinishPayload
+} from 'dtos'
 
 import styles from './styles.module.scss'
 import { usePlayer } from '@hooks/usePlayer'
@@ -21,12 +28,15 @@ type IGameContext = {
   adversary: Player | null
   canPlay: boolean
   play: (pos: ArenaPositions) => void
+  finishedPayload: GameFinishPayload | null
 }
 
 const GameContext = createContext({} as IGameContext)
 
 export const GameProvider: React.FC = ({ children }) => {
   const [game, setGame] = useState<Game | null>(null)
+  const [finishedPayload, setFinishedPayload] =
+    useState<GameFinishPayload | null>(null)
   const [canPlay, setCanPlay] = useState(false)
 
   const { connection, isConnected } = useConnection()
@@ -57,6 +67,8 @@ export const GameProvider: React.FC = ({ children }) => {
     /** Game events handler */
     if (!isConnected) return
 
+    console.log('TESTE')
+
     connection!.on(GameEvents.ON_MATCH_FIND, (game: Game) => {
       setGame(game)
 
@@ -74,7 +86,20 @@ export const GameProvider: React.FC = ({ children }) => {
     connection!.on(GameEvents.ON_USER_PLAY, (game: Game) => {
       setGame(game)
     })
-  }, [connection, isConnected, setPlayer, router])
+
+    connection!.on(GameEvents.ON_GAME_WIN, (payload: GameFinishPayload) => {
+      console.log(`${payload.winner?.name} venceu!`)
+
+      console.log('combination:', payload.combination)
+
+      setFinishedPayload(payload)
+      setGame(payload.game)
+    })
+
+    connection!.on('disconnect', () => {
+      console.log('Disconnected')
+    })
+  }, [connection, isConnected])
 
   useEffect(() => {
     if (!game) return
@@ -94,7 +119,8 @@ export const GameProvider: React.FC = ({ children }) => {
         game,
         adversary: adversary || null,
         canPlay,
-        play
+        play,
+        finishedPayload
       }}
     >
       {!connection || !connection?.active ? (

@@ -1,0 +1,73 @@
+@import "colors";
+
+@keyframes fade_in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  animation-name: fade_in;
+  animation-duration: 1.5s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+  backdrop-filter: blur(6px);
+
+  &.win {
+    background: linear-gradient(0deg, rgba($green, 0.15) 0%, rgba($dark, 0.6) 45%, rgba(0, 0, 0, 0.5) 100%);
+
+    .title {
+      color: $green;
+    }
+  }
+
+  &.lose {
+    background: linear-gradient(0deg, rgba($red, 0.15) 0%, rgba($dark, 0.6) 45%, rgba(0, 0, 0, 0.5) 100%);
+
+    .title {
+      color: $red;
+    }
+  }
+
+  &.tie {
+    background: linear-gradient(0deg, rgba($white, 0.2) 0%, rgba($dark, 0.6) 45%, rgba(0, 0, 0, 0.5) 100%);
+
+    .title {
+      color: rgba($white, 0.8);
+    }
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 1fr 100px 1fr;
+    align-items: flex-end;
+    column-gap: 20px;
+  }
+
+  .vs {
+    align-self: center;
+    padding-top: 20px;
+
+    span {
+      color: $orange;
+      font-size: 40px;
+      font-family: 'Permanent Marker', cursive !important;
+    }
+  }
+
+  .title {
+    margin-top: 10px;
+    grid-column: 1 / -1;
+    text-align: center;
+  }
+}

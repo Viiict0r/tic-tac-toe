@@ -3,14 +3,34 @@ import {
   ArenaPositions,
   ArenaPositionValue,
   GameEvents,
-  Arena as ArenaObject
+  Arena as ArenaObject,
+  GameStatus
 } from 'dtos'
+
 import GameManager from '@core/game/game-manager'
 import ServerManager from '@core/server-manager'
 
 export class Arena {
-  private readonly gameId: string
   private plays: ArenaPlay[] = []
+  private readonly gameId: string
+  private readonly winCombinations: ArenaPositions[][] = [
+    ['A1', 'B1', 'C1'],
+    ['C1', 'B1', 'A1'],
+    ['A2', 'B2', 'C2'],
+    ['C2', 'B2', 'A2'],
+    ['A3', 'B3', 'C3'],
+    ['C3', 'B3', 'A3'],
+    ['A1', 'A2', 'A3'],
+    ['A3', 'A2', 'A1'],
+    ['B1', 'B2', 'B3'],
+    ['B3', 'B2', 'B1'],
+    ['C1', 'C2', 'C3'],
+    ['C3', 'C2', 'C1'],
+    ['A1', 'B2', 'C3'],
+    ['C3', 'B2', 'A1'],
+    ['A3', 'B2', 'C1'],
+    ['C1', 'B2', 'A3']
+  ]
 
   constructor(gameId: string) {
     this.gameId = gameId
@@ -64,10 +84,66 @@ export class Arena {
     ServerManager.getConnection()
       ?.to(this.gameId)
       .emit(GameEvents.ON_USER_PLAY, game.toObject())
+
+    this.processPlay(play)
   }
 
   public getPlays() {
     return this.plays
+  }
+
+  private processPlay(play: ArenaPlay) {
+    // TODO: Verificar empate
+    const userPlays = this.plays.filter(p => p.playerToken === play.playerToken)
+
+    if (userPlays.length < 3) {
+      console.log(
+        '[Game Win Debug]',
+        this.gameId,
+        'insuficient plays to check win combination.'
+      )
+      return
+    }
+
+    const game = GameManager.getAllCurrentGames().find(
+      g => g.getId() === this.gameId
+    )
+
+    this.winCombinations.forEach(combination => {
+      const pls = userPlays.filter(
+        play => !!combination.find(pos => pos === play.position)
+      )
+
+      console.log(
+        '[Game Win Debug] Plays:',
+        pls.map(p => p.position)
+      )
+      if (pls.length === 3) {
+        const playerByToken = ServerManager.getUsers().find(
+          usr => usr.getToken() === play.playerToken
+        )
+
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        game?.finish(
+          playerByToken!,
+          `${combination[0]}_${combination[1]}_${combination[2]}`
+        )
+
+        console.log(
+          '[Game Win Debug]',
+          playerByToken?.getUsername(),
+          'win the game with combination:',
+          combination
+        )
+      }
+    })
+
+    // Check tie
+    if (this.plays.length >= 9 && game?.getStatus() !== GameStatus.FINISHED) {
+      game?.finish(null, null)
+
+      console.log('[Game Win Debug] Game finished due tie...')
+    }
   }
 
   public toObject(): ArenaObject {

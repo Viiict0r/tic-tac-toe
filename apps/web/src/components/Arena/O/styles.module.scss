@@ -6,4 +6,12 @@
   color: $red;
   cursor: default;
   user-select: none;
+
+  &.disabled {
+    color: rgba(255, 255, 255, 0.4);
+  }
+
+  &.win {
+    color: $green;
+  }
 }

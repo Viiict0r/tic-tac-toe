@@ -1,0 +1,68 @@
+@import "colors";
+
+.container {
+  height: auto;
+}
+
+.header {
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 60px;
+  padding-top: 5px;
+
+  span {
+    font-size: 20px; // Resize logo
+  }
+}
+
+.game_container {
+  display: grid;
+  grid-template-columns: 1fr minmax(max-content, 500px) 1fr;
+  column-gap: 25px;
+  text-align: center;
+
+  .game_turn {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 30px;
+    grid-column: 1 / -1;
+
+    span {
+      font-size: 12px;
+      text-transform: uppercase;
+      line-height: 20px;
+    }
+
+    b {
+      font-size: 18px;
+    }
+  }
+
+  .game_arena {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .game_footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 50px;
+    grid-column: 1 / -1;
+  }
+}
+
+.player_wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100%;
+  padding: 0 40px;
+}
