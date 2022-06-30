@@ -20,9 +20,18 @@ class ServerManager {
   public init(app: Express) {
     const server = http.createServer(app)
 
+    let origins = []
+    const env = process.env.APP_URL || 'http://localhost:*'
+
+    if (env.indexOf(';') !== -1) {
+      origins = env.split(';').map(origin => `${origin}:*`)
+    } else {
+      origins.push(env)
+    }
+
     this.connection = new Server(server, {
       cors: {
-        origin: process.env.APP_URL || 'http://localhost:3000'
+        origin: origins
       }
     })
 
