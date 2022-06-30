@@ -21,7 +21,8 @@
   },
   "engines": {
     "npm": ">=7.0.0",
-    "node": ">=14.0.0 <=16.15.1"
+    "node": ">=14.0.0 <=16.15.1",
+    "yarn": "<=1.22.11"
   },
   "dependencies": {},
   "packageManager": "yarn@1.22.11"
