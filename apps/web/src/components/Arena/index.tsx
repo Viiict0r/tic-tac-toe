@@ -79,6 +79,8 @@ const Arena: React.FC = () => {
   const handlePlay = (position: ArenaPositions) => {
     if (!canPlay) return
 
+    if (game?.arena?.plays.find(play => play.position === position)) return
+
     play(position)
   }
 
@@ -151,7 +153,12 @@ const Arena: React.FC = () => {
         </div>
         {positions.map(pos => (
           <div
-            className={cx([styles.pos, !canPlay && styles.pos__disabled])}
+            className={cx([
+              styles.pos,
+              (!canPlay ||
+                !!game?.arena?.plays.find(play => play.position === pos)) &&
+                styles.pos__disabled
+            ])}
             key={pos}
             onClick={() => handlePlay(pos)}
           >

@@ -14,9 +14,7 @@ export const ConnectionProvider: React.FC = ({ children }) => {
   useEffect(() => {
     const connection = io(process.env.NEXT_PUBLIC_API_URL as string)
 
-    setTimeout(() => {
-      setConnection(connection)
-    }, 1500)
+    setConnection(connection)
   }, [])
 
   return (

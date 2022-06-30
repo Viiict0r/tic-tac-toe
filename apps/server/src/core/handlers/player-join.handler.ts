@@ -36,7 +36,10 @@ export const PlayerJoinHandler = (
     }
 
     if (regex.test(user.name)) {
-      callback(undefined, 'Seu nickname não pode conter caracteres especiais.')
+      callback(
+        undefined,
+        'Seu nickname não pode conter caracteres especiais e nem espaços.'
+      )
       return
     }
 

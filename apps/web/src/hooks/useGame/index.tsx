@@ -58,7 +58,7 @@ export const GameProvider: React.FC = ({ children }) => {
       },
       (error: string) => {
         if (error) {
-          alert(error)
+          toast.error(error)
         }
       }
     )

@@ -60,7 +60,9 @@ export const PlayerRegistration: React.FC = () => {
     }
 
     if (regex.test(nickField)) {
-      setError('Seu nickname não pode conter caracteres especiais.')
+      setError(
+        'Seu nickname não pode conter caracteres especiais e nem espaços.'
+      )
       return
     }
 
@@ -87,9 +89,7 @@ export const PlayerRegistration: React.FC = () => {
 
       const { token } = response.data
 
-      setTimeout(async () => {
-        await connect({ name: nickField, token, avatar: selectedAvatar })
-      }, 900)
+      await connect({ name: nickField, token, avatar: selectedAvatar })
     } catch (error: any) {
       console.log(error)
       setLoading(false)
@@ -126,7 +126,7 @@ export const PlayerRegistration: React.FC = () => {
               onChange={e => {
                 if (error) setError(null)
 
-                setNickField(e.target.value)
+                setNickField(String(e.target.value).trim())
               }}
               className={styles.form__input_wraper___input}
               placeholder="Ex.: John_Doe"
