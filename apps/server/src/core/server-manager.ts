@@ -22,15 +22,17 @@ class ServerManager {
 
     this.connection = new Server(server, {
       cors: {
-        origin: 'http://localhost:3000'
+        origin: process.env.APP_URL || 'http://localhost:3000'
       }
     })
 
     this.registerListeners()
     this.runjobs()
 
-    server.listen(3333, () => {
-      console.log('[Server] Listening on 3333')
+    const port = process.env.PORT || 3333
+
+    server.listen(port, () => {
+      console.log(`[Server] Listening on ${port}`)
     })
   }
 

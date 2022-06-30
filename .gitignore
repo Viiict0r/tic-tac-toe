@@ -10,6 +10,8 @@ coverage
 
 # server
 dist/
+.env
+!.env.example
 
 # next.js
 .next/
