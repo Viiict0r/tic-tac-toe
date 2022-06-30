@@ -70,4 +70,30 @@
     grid-column: 1 / -1;
     text-align: center;
   }
+
+  .actions {
+    margin-top: 60px;
+    grid-column: 1 / -1;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+
+    a {
+      color: $white;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      font-weight: 500;
+      transition: opacity 200ms;
+
+      &:hover {
+        opacity: 0.6;
+      }
+
+      svg {
+        margin-right: 5px;
+      }
+    }
+  }
 }

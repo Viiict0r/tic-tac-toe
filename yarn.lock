@@ -2056,6 +2056,11 @@ clone-response@^1.0.2:
   dependencies:
     mimic-response "^1.0.0"
 
+clsx@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
+  integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
+
 color-convert@^1.9.0:
   version "1.9.3"
   resolved "https://registry.yarnpkg.com/color-convert/-/color-convert-1.9.3.tgz#bb71850690e1f136567de629d2d5471deda4c1e8"
@@ -4375,6 +4380,13 @@ rc@^1.2.8:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-confetti@^6.1.0:
+  version "6.1.0"
+  resolved "https://registry.yarnpkg.com/react-confetti/-/react-confetti-6.1.0.tgz#03dc4340d955acd10b174dbf301f374a06e29ce6"
+  integrity sha512-7Ypx4vz0+g8ECVxr88W9zhcQpbeujJAVqL14ZnXJ3I23mOI9/oBVTQ3dkJhUmB0D6XOtCZEM6N0Gm9PMngkORw==
+  dependencies:
+    tween-functions "^1.2.0"
+
 react-dom@17.0.2:
   version "17.0.2"
   resolved "https://registry.yarnpkg.com/react-dom/-/react-dom-17.0.2.tgz#ecffb6845e3ad8dbfcdc498f0d0a939736502c23"
@@ -4383,6 +4395,11 @@ react-dom@17.0.2:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     scheduler "^0.20.2"
+
+react-icons@^4.4.0:
+  version "4.4.0"
+  resolved "https://registry.yarnpkg.com/react-icons/-/react-icons-4.4.0.tgz#a13a8a20c254854e1ec9aecef28a95cdf24ef703"
+  integrity sha512-fSbvHeVYo/B5/L4VhB7sBA1i2tS8MkT0Hb9t2H1AVPkwGfVHLJCqyr2Py9dKMxsyM63Eng1GkdZfbWj+Fmv8Rg==
 
 react-is@17.0.2:
   version "17.0.2"
@@ -4398,6 +4415,13 @@ react-refresh@0.8.3:
   version "0.8.3"
   resolved "https://registry.yarnpkg.com/react-refresh/-/react-refresh-0.8.3.tgz#721d4657672d400c5e3c75d063c4a85fb2d5d68f"
   integrity sha512-X8jZHc7nCMjaCqoU+V2I0cOhNW+QMBwSUkeXnTi8IPe6zaRWfn60ZzvFDZqWPfmSJfjub7dDW1SP0jaHWLu/hg==
+
+react-toastify@^9.0.5:
+  version "9.0.5"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.0.5.tgz#310d7bcfcf3887c0e8461ac6068fe1abb8d720e1"
+  integrity sha512-dszPCeQINY+Nm6HmsiAXT/7wsazPqv0S/RuhIYLAW+fTKcd3T1iRjZG0XqrN9nvAzqaE5J6uxMaiBrOevxjY8g==
+  dependencies:
+    clsx "^1.1.1"
 
 react@17.0.2, react@^17.0.2:
   version "17.0.2"
@@ -5172,6 +5196,11 @@ turbo@latest:
     turbo-windows-32 "1.2.16"
     turbo-windows-64 "1.2.16"
     turbo-windows-arm64 "1.2.16"
+
+tween-functions@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tween-functions/-/tween-functions-1.2.0.tgz#1ae3a50e7c60bb3def774eac707acbca73bbc3ff"
+  integrity sha512-PZBtLYcCLtEcjL14Fzb1gSxPBeL7nWvGhO5ZFPGqziCcr8uvHp0NDmdjBchp6KHL+tExcg0m3NISmKxhU394dA==
 
 type-check@^0.4.0, type-check@~0.4.0:
   version "0.4.0"

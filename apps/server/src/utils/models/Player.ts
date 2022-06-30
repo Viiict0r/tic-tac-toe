@@ -46,6 +46,14 @@ export class Player {
     )
   }
 
+  public reset() {
+    // Reset player
+    this.currentGameId = null
+    this.status = PlayerStatus.AWAY
+    this.side = null
+    this.canPlay = false
+  }
+
   public setCurrentGame(gameId: string) {
     this.currentGameId = gameId
   }

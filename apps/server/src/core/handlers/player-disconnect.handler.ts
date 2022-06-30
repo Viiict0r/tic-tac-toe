@@ -1,12 +1,24 @@
 import { Socket } from 'socket.io'
 
 import ServerManager from '@core/server-manager'
+import { GameFinishReason } from 'dtos'
 
-type ParamUser = {
-  name: string
-}
+export const PlayerDisconnectHandler = (socket: Socket) => {
+  console.log('[Debug]', socket.id, 'disconnected')
 
-export const PlayerDisconnectHandler = (socket: Socket, user: ParamUser) => {
-  // Check player is in game and end-it
-  ServerManager.removeUserByNickname(user.name)
+  const player = ServerManager.getPlayerById(socket.id)
+
+  if (!player) return
+
+  if (player.getCurrentGame()) {
+    // Player in game
+    const game = player.getCurrentGame()
+    const adversary = game
+      ?.getPlayers()
+      .find(p => p.getUserId() !== player.getUserId())
+
+    game?.finish(adversary || null, null, GameFinishReason.DISCONNECTED)
+  }
+
+  ServerManager.removeUserById(socket.id)
 }

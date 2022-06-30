@@ -5,7 +5,7 @@ import { PlayerJoinHandler } from './handlers/player-join.handler'
 import { PlayerMatchQueue } from './handlers/player-match-queue.handler'
 import { PlayerQuitHandler } from './handlers/player-quit.handler'
 import { PlayerPlayHandler } from './handlers/player-play.handler'
-
+import { PlayerDisconnectHandler } from './handlers/player-disconnect.handler'
 class EventHandler {
   public registerHandlers() {
     // Register all event handlers
@@ -20,6 +20,10 @@ class EventHandler {
     ServerManager.registerListener(
       Events.ON_PLAYER_SEARCH_MATCH,
       PlayerMatchQueue
+    )
+    ServerManager.registerListener(
+      Events.ON_PLAYER_DISCONNECT,
+      PlayerDisconnectHandler
     )
     ServerManager.registerListener(Events.MAKE_PLAY, PlayerPlayHandler)
   }

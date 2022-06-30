@@ -8,6 +8,7 @@ export default class MyDocument extends Document {
       <Html lang="pt-br">
         <Head>
           <meta charSet="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"

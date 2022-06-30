@@ -18,3 +18,21 @@ body, html, #__next {
   padding: 0 15px;
   height: 100%;
 }
+
+/* React Toastify Overrides */
+:root {
+  --toastify-color-light: rgba(45, 64, 89, 0.21) !important;
+  --toastify-color-error: rgba(234, 84, 85, 0.5) !important;
+  --toastify-text-color-light: #fff !important;
+  --toastify-toast-min-height: 55px !important;
+  --toastify-icon-color-info: rgba(255, 255, 255, 0.2) !important;
+}
+
+.Toastify__toast {
+  backdrop-filter: blur(13.5px);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1) !important;
+
+  .Toastify__close-button--light {
+    color: #fff !important;
+  }
+}

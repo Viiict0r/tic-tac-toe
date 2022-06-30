@@ -1,5 +1,11 @@
-import React from 'react'
-import { ArenaPositions, ArenaPositionValue, GameStatus } from 'dtos'
+import React, { useEffect } from 'react'
+
+import {
+  ArenaPositions,
+  ArenaPositionValue,
+  GameFinishReason,
+  GameStatus
+} from 'dtos'
 
 import O from './O'
 import X from './X'
@@ -9,6 +15,7 @@ import cx from '@utils/cx'
 import { useGame } from '@hooks/useGame'
 import { FinishScreen } from './FinishScreen'
 import { usePlayer } from '@hooks/usePlayer'
+import { toast } from 'react-toastify'
 
 const positions: ArenaPositions[] = [
   'A1',
@@ -23,7 +30,7 @@ const positions: ArenaPositions[] = [
 ]
 
 const Arena: React.FC = () => {
-  const { game, canPlay, play, finishedPayload } = useGame()
+  const { game, canPlay, play, finishedPayload, adversary } = useGame()
   const { player } = usePlayer()
 
   const positionItem = (pos: ArenaPositions) => {
@@ -90,7 +97,23 @@ const Arena: React.FC = () => {
     return null
   }
 
-  console.log(game)
+  useEffect(() => {
+    if (game?.status !== GameStatus.FINISHED) return
+
+    if (
+      finishedPayload &&
+      finishedPayload.reason === GameFinishReason.DISCONNECTED
+    ) {
+      toast.error(`${adversary?.name || '---'} desconectou`)
+    }
+
+    if (
+      finishedPayload &&
+      finishedPayload.reason === GameFinishReason.FORFEIT
+    ) {
+      toast.error(`${adversary?.name || '---'} desistiu`)
+    }
+  }, [adversary, finishedPayload, game])
 
   return (
     <>
@@ -111,7 +134,7 @@ const Arena: React.FC = () => {
             <div
               className={cx([
                 styles.win__delimiter___vertical,
-                finishedPayload && styles.draw,
+                finishedPayload && finishedPayload.combination && styles.draw,
                 finishedPayload?.combination &&
                   styles[finishedPayload.combination]
               ])}
@@ -119,7 +142,7 @@ const Arena: React.FC = () => {
             <div
               className={cx([
                 styles.win__delimiter___horizontal,
-                finishedPayload && styles.draw,
+                finishedPayload && finishedPayload.combination && styles.draw,
                 finishedPayload?.combination &&
                   styles[finishedPayload.combination]
               ])}

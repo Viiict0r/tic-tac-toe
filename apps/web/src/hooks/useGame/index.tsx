@@ -22,6 +22,7 @@ import {
 
 import styles from './styles.module.scss'
 import { usePlayer } from '@hooks/usePlayer'
+import { toast } from 'react-toastify'
 
 type IGameContext = {
   game: Game | null
@@ -67,9 +68,9 @@ export const GameProvider: React.FC = ({ children }) => {
     /** Game events handler */
     if (!isConnected) return
 
-    console.log('TESTE')
-
     connection!.on(GameEvents.ON_MATCH_FIND, (game: Game) => {
+      // Clear previus state
+      setFinishedPayload(null)
       setGame(game)
 
       const self = game.players.find(p => p.id === connection?.id)
@@ -87,17 +88,41 @@ export const GameProvider: React.FC = ({ children }) => {
       setGame(game)
     })
 
-    connection!.on(GameEvents.ON_GAME_WIN, (payload: GameFinishPayload) => {
-      console.log(`${payload.winner?.name} venceu!`)
+    connection!.on(GameEvents.ON_TIME_PLAY_COUNT, (game: Game) => {
+      setGame(game)
+    })
 
-      console.log('combination:', payload.combination)
+    connection!.on(GameEvents.ON_PLAY_TIMEOUT, (game: Game) => {
+      setGame(game)
 
+      const player_losed_turn = game.players.find(
+        player => player.id !== game.turn
+      )
+
+      if (player_losed_turn) {
+        if (player_losed_turn.id === connection?.id) {
+          toast.info('Você perdeu a vez')
+        } else {
+          toast.info(`${player_losed_turn.name} perdeu a vez`)
+        }
+      }
+    })
+
+    connection!.on(GameEvents.ON_GAME_FINISH, (payload: GameFinishPayload) => {
       setFinishedPayload(payload)
       setGame(payload.game)
+
+      const self = payload.game.players.find(p => p.id === connection?.id)
+
+      setPlayer(self!)
     })
 
     connection!.on('disconnect', () => {
-      console.log('Disconnected')
+      toast.error('Conexão com o servidor perdida')
+
+      setTimeout(() => {
+        window.location.reload()
+      }, 1000)
     })
   }, [connection, isConnected])
 

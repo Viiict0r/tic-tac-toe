@@ -1,10 +1,12 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import {
   ArenaPlay,
   ArenaPositions,
   ArenaPositionValue,
   GameEvents,
   Arena as ArenaObject,
-  GameStatus
+  GameStatus,
+  GameFinishReason
 } from 'dtos'
 
 import GameManager from '@core/game/game-manager'
@@ -123,10 +125,10 @@ export class Arena {
           usr => usr.getToken() === play.playerToken
         )
 
-        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         game?.finish(
           playerByToken!,
-          `${combination[0]}_${combination[1]}_${combination[2]}`
+          `${combination[0]}_${combination[1]}_${combination[2]}`,
+          GameFinishReason.GAME_WIN
         )
 
         console.log(
@@ -140,7 +142,7 @@ export class Arena {
 
     // Check tie
     if (this.plays.length >= 9 && game?.getStatus() !== GameStatus.FINISHED) {
-      game?.finish(null, null)
+      game?.finish(null, null, GameFinishReason.GAME_TIED)
 
       console.log('[Game Win Debug] Game finished due tie...')
     }

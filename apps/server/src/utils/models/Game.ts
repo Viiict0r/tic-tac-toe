@@ -1,13 +1,16 @@
 import { v4 as uuid } from 'uuid'
 import ServerManager from '@core/server-manager'
+import GameManager from '@core/game/game-manager'
 import { Player } from './Player'
+import { Arena } from './Arena'
+
 import {
   GameStatus,
   Game as GameObject,
   GameEvents,
-  GameFinishPayload
+  GameFinishPayload,
+  GameFinishReason
 } from 'dtos'
-import { Arena } from './Arena'
 
 export class Game {
   private readonly id: string
@@ -15,6 +18,8 @@ export class Game {
   private status: GameStatus
   private turn: string
   private arena: Arena | null
+  private timeToPlay: number
+  private timer: NodeJS.Timer | null = null
 
   constructor(players: Player[]) {
     this.id = uuid()
@@ -22,6 +27,7 @@ export class Game {
     this.status = GameStatus.WAITING
     this.turn = ''
     this.arena = null
+    this.timeToPlay = 30
   }
 
   public getId() {
@@ -51,12 +57,44 @@ export class Game {
   public switchTurn() {
     if (this.turn === '') {
       this.setTurn(this.players[0].getUserId())
-      return
+    } else {
+      const newTurnPlayer = this.players.filter(
+        p => p.getUserId() !== this.turn
+      )
+
+      this.setTurn(newTurnPlayer[0].getUserId())
     }
 
-    const newTurnPlayer = this.players.filter(p => p.getUserId() !== this.turn)
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
 
-    this.setTurn(newTurnPlayer[0].getUserId())
+    this.timeToPlay = 30
+
+    this.timer = setInterval(() => {
+      console.log(
+        '[Debug - Timer] Timer running for game',
+        this.id,
+        'seconds',
+        this.timeToPlay
+      )
+
+      if (this.timeToPlay <= 0) {
+        console.log('TEMPO ESGOTADO!')
+        this.switchTurn()
+
+        ServerManager.getConnection()
+          ?.to(this.id)
+          .emit(GameEvents.ON_PLAY_TIMEOUT, this.toObject())
+        return
+      }
+
+      this.timeToPlay = this.timeToPlay - 1
+
+      ServerManager.getConnection()
+        ?.to(this.id)
+        .emit(GameEvents.ON_TIME_PLAY_COUNT, this.toObject())
+    }, 1000)
   }
 
   public start() {
@@ -74,26 +112,34 @@ export class Game {
       .emit(GameEvents.ON_GAME_START, this.toObject())
   }
 
-  public finish(winner: Player | null, combination: string | null) {
-    // Finish the game
-    // TODO: Implementar empate
+  public finish(
+    winner: Player | null,
+    combination: string | null,
+    reason: GameFinishReason
+  ) {
     console.log('[Debug] Game #', this.id, 'finished.')
+
+    if (this.timer) {
+      clearInterval(this.timer)
+    }
 
     this.status = GameStatus.FINISHED
 
     ServerManager.getConnection()
       ?.to(this.id)
-      .emit(GameEvents.ON_GAME_WIN, {
+      .emit(GameEvents.ON_GAME_FINISH, {
         winner: winner?.toObject(),
         combination,
-        game: this.toObject()
+        game: this.toObject(),
+        reason
       } as GameFinishPayload)
 
     this.players.forEach(player => {
       player.getConnection().leave(this.id)
+      player.reset()
     })
 
-    // Destroy this instance
+    GameManager.destroyGame(this.id)
   }
 
   public toObject(): GameObject {
@@ -102,7 +148,8 @@ export class Game {
       players: this.players.map(player => player.toObject()),
       status: this.getStatus(),
       turn: this.getTurn(),
-      arena: this.arena?.toObject()
+      arena: this.arena?.toObject(),
+      timeToPlay: this.timeToPlay
     }
   }
 }

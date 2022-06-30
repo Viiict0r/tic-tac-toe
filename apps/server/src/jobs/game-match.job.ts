@@ -6,23 +6,14 @@ import { PlayerStatus } from 'dtos'
 
 class GameMatchJob {
   public execute() {
-    cron.schedule('*/5 * * * * *', () => {
+    cron.schedule('*/15 * * * * *', () => {
       const searchingPlayers = ServerManager.getUsers().filter(
         usr => usr.getStatus() === PlayerStatus.SEARCHING
-      )
-
-      console.log(
-        searchingPlayers.map(p => [p.getStatus(), p.getUsername()]),
-        ServerManager.getUsers().map(p => [p.getStatus(), p.getUsername()])
       )
 
       if (searchingPlayers.length < 2) return
 
       const players = [searchingPlayers[0], searchingPlayers[1]]
-      console.log(
-        'aaaa',
-        players.map(p => [p.getStatus(), p.getUsername()])
-      )
 
       GameManager.createGame(players)
     })

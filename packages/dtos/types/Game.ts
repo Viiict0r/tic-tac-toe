@@ -31,10 +31,19 @@ export type Game = {
   players: Player[]
   arena?: Arena
   turn: string
+  timeToPlay: number
 }
 
 export type GameFinishPayload = {
   winner?: Player
   combination?: string
   game: Game
+  reason: GameFinishReason
+}
+
+export enum GameFinishReason {
+  DISCONNECTED = 'disconnected',
+  FORFEIT = 'forfeit',
+  GAME_WIN = 'game_win',
+  GAME_TIED = 'tied_game'
 }

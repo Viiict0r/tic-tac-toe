@@ -5,12 +5,13 @@ import { Button } from '@components/Button'
 import Logo from '@components/Logo'
 import { useGame } from '@hooks/useGame'
 import { usePlayer } from '@hooks/usePlayer'
+import cx from '@utils/cx'
 import React from 'react'
 
 import styles from './styles.module.scss'
 
 const GameRoom: React.FC = () => {
-  const { game, adversary, canPlay } = useGame()
+  const { adversary, canPlay, game } = useGame()
   const { player } = usePlayer()
 
   return (
@@ -21,8 +22,32 @@ const GameRoom: React.FC = () => {
       <div className={styles.container}>
         <div className={styles.game_container}>
           <div className={styles.game_turn}>
-            <span>É a vez de:</span>
-            <b>{canPlay ? player?.name : adversary?.name}</b>
+            {!!canPlay && (
+              <div className={styles.my_turn}>
+                <span>É sua vez de jogar!</span>
+              </div>
+            )}
+
+            {!canPlay && (
+              <div>
+                <span>É a vez de:</span>
+                <b>{canPlay ? player?.name : adversary?.name}</b>
+              </div>
+            )}
+            <div className={styles.divider}></div>
+            <div>
+              <span>TEMPO PARA JOGAR:</span>
+              <b
+                className={cx([
+                  !!game?.timeToPlay &&
+                    game.timeToPlay <= 10 &&
+                    styles.timer_red,
+                  !game?.timeToPlay && styles.timer_red
+                ])}
+              >
+                00:{String(game?.timeToPlay).padStart(2, '0')}
+              </b>
+            </div>
           </div>
           <div className={styles.player_wrapper}>
             <PlayerAvatar

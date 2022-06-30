@@ -55,11 +55,6 @@ class ServerManager {
           listener.handler(socket, ...args)
         )
       })
-
-      socket.on('disconnect', () => {
-        this.removeUserById(socket.id)
-        console.log('[Debug]', socket.id, 'disconnected')
-      })
     })
   }
 
@@ -85,6 +80,10 @@ class ServerManager {
 
   public getUsers() {
     return this.users
+  }
+
+  public getPlayerById(socketId: string) {
+    return this.users.find(usr => usr.getUserId() === socketId)
   }
 
   public updateUserStatus(nickname: string, status: PlayerStatus) {
