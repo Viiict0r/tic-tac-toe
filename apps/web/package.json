@@ -18,6 +18,9 @@
     "react-toastify": "^9.0.5",
     "socket.io-client": "^4.5.1"
   },
+  "engines": {
+    "yarn": ">=1.22.11"
+  },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
     "@types/axios": "^0.14.0",
