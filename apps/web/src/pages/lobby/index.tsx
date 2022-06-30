@@ -10,9 +10,10 @@ import Router from 'next/router'
 import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import Spinner from '@components/Spinner'
 import { useGame } from '@hooks/useGame'
-import { Events } from 'dtos'
+import { Events, GameStatus } from 'dtos'
 import { useConnection } from '@hooks/useConnection'
 import { AvatarKey } from '@components/Avatar'
+import Head from 'next/head'
 
 enum ScreenState {
   NORMAL = 'normal',
@@ -25,7 +26,7 @@ const Lobby: NextPage = () => {
   const [actionLoading, setActionLoading] = useState(false)
 
   const { player, logout } = usePlayer()
-  const { adversary } = useGame()
+  const { adversary, game } = useGame()
   const { connection } = useConnection()
 
   const handleUserLeave = () => {
@@ -76,96 +77,108 @@ const Lobby: NextPage = () => {
     }
   }, [player])
 
+  useEffect(() => {
+    if (game?.status === GameStatus.WAITING && adversary) {
+      setState(ScreenState.ADVERSARY_FINDED)
+    }
+  }, [game?.status, adversary])
+
   return (
-    <div className="container">
-      <div className={styles.wrapper}>
-        <div className={styles.wrapper_content}>
-          <Logo />
-          <div className={styles.welcome__text}>
-            <span>
-              {state === ScreenState.ADVERSARY_FINDED ? (
-                'Adversário encontrado!'
-              ) : (
-                <>
-                  Bem vindo(a) <b>{player?.name}</b>!
-                </>
-              )}
-            </span>
-          </div>
-          {state === ScreenState.NORMAL && (
-            <div className={styles.action_wrapper}>
-              <Button size="big" onClick={handleSearch}>
-                Jogar
-              </Button>
-              <Button
-                size="big"
-                onClick={handleUserLeave}
-                disabled={actionLoading}
-                loading={actionLoading}
-              >
-                Sair
-              </Button>
+    <>
+      <Head>
+        <title>Lobby | Tic Tac Toe</title>
+      </Head>
+      <div className="container">
+        <div className={styles.wrapper}>
+          <div className={styles.wrapper_content}>
+            <Logo />
+            <div className={styles.welcome__text}>
+              <span>
+                {state === ScreenState.ADVERSARY_FINDED ? (
+                  'Adversário encontrado!'
+                ) : (
+                  <>
+                    Bem vindo(a) <b>{player?.name}</b>!
+                  </>
+                )}
+              </span>
             </div>
-          )}
-
-          {state === ScreenState.ADVERSARY_FINDED && (
-            <div className={styles.searching_wrapper}>
-              <div className={styles.avatar}>
-                <PlayerAvatar
-                  avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
-                  username={player?.name || ''}
-                  side={player?.side}
-                />
-              </div>
-              <div className={styles.separator_vs}>
-                <span>VS</span>
-              </div>
-              <div className={styles.avatar}>
-                <PlayerAvatar
-                  avatar={(adversary?.avatar as AvatarKey) || 'avatar-batman'}
-                  username={adversary?.name || ''}
-                  side={adversary?.side}
-                />
-              </div>
-              <div className={styles.cancel}>
-                <span>
-                  Iniciando partida<b>...</b>
-                </span>
-              </div>
-            </div>
-          )}
-
-          {state === ScreenState.SEARCHING && (
-            <div className={styles.searching_wrapper}>
-              <div className={styles.avatar}>
-                <PlayerAvatar
-                  avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
-                  username={player?.name || ''}
-                />
-              </div>
-              <div className={styles.separator}></div>
-              <div className={styles.searching}>
-                <Spinner size={25} />
-                <span>
-                  Procurando por um
-                  <br />
-                  adversário...
-                </span>
-              </div>
-              <div className={styles.cancel}>
+            {state === ScreenState.NORMAL && (
+              <div className={styles.action_wrapper}>
+                <Button size="big" onClick={handleSearch}>
+                  Jogar
+                </Button>
                 <Button
-                  onClick={handleCancelSearch}
+                  size="big"
+                  onClick={handleUserLeave}
                   disabled={actionLoading}
                   loading={actionLoading}
                 >
-                  Cancelar
+                  Sair
                 </Button>
               </div>
-            </div>
-          )}
+            )}
+
+            {state === ScreenState.ADVERSARY_FINDED && (
+              <div className={styles.searching_wrapper}>
+                <div className={styles.avatar}>
+                  <PlayerAvatar
+                    avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
+                    username={player?.name || ''}
+                    side={player?.side}
+                  />
+                </div>
+                <div className={styles.separator_vs}>
+                  <span>VS</span>
+                </div>
+                <div className={styles.avatar}>
+                  <PlayerAvatar
+                    avatar={(adversary?.avatar as AvatarKey) || 'avatar-batman'}
+                    username={adversary?.name || ''}
+                    side={adversary?.side}
+                  />
+                </div>
+                <div className={styles.cancel}>
+                  <span>
+                    Iniciando partida<b>...</b>
+                  </span>
+                </div>
+              </div>
+            )}
+
+            {state === ScreenState.SEARCHING && (
+              <div className={styles.searching_wrapper}>
+                <div className={styles.avatar}>
+                  <PlayerAvatar
+                    avatar={(player?.avatar as AvatarKey) || 'avatar-batman'}
+                    username={player?.name || ''}
+                  />
+                </div>
+                <div className={styles.separator}></div>
+                <div className={styles.searching}>
+                  <Spinner size={25} />
+                  <span>
+                    Procurando por um
+                    <br />
+                    adversário...
+                  </span>
+                </div>
+                <div className={styles.cancel}>
+                  <Button
+                    onClick={handleCancelSearch}
+                    disabled={actionLoading}
+                    loading={actionLoading}
+                    variant="danger"
+                  >
+                    Cancelar
+                  </Button>
+                </div>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 

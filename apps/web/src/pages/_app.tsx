@@ -1,4 +1,5 @@
 import React from 'react'
+import Head from 'next/head'
 
 import { AppProps } from 'next/app'
 import { GameProvider } from '@hooks/useGame'
@@ -9,13 +10,18 @@ import '../styles/global.scss'
 
 const App = ({ Component, pageProps }: AppProps) => {
   return (
-    <ConnectionProvider>
-      <PlayerProvider>
-        <GameProvider>
-          <Component {...pageProps} />
-        </GameProvider>
-      </PlayerProvider>
-    </ConnectionProvider>
+    <>
+      <Head>
+        <title>Tic Tac Toe</title>
+      </Head>
+      <ConnectionProvider>
+        <PlayerProvider>
+          <GameProvider>
+            <Component {...pageProps} />
+          </GameProvider>
+        </PlayerProvider>
+      </ConnectionProvider>
+    </>
   )
 }
 
