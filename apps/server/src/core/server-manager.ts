@@ -24,7 +24,7 @@ class ServerManager {
     const env = process.env.APP_URL || 'http://localhost:*'
 
     if (env.indexOf(';') !== -1) {
-      origins = env.split(';').map(origin => `${origin}:*`)
+      origins = env.split(';')
     } else {
       origins.push(env)
     }
