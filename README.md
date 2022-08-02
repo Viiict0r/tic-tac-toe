@@ -1,21 +1,25 @@
 <p align="center">
   <img src="/docs/assets/logo.png" height="80" />
-
-   *Jogo da velha multijogador construído com [Next.js](https://nextjs.org/) & [Socket.io](https://socket.io/)!*
 </p>
-
-<p align="center">
+<div align="center">
 
   [![CI](https://github.com/Viiict0r/tic-tac-toe/actions/workflows/main.yml/badge.svg)](https://github.com/Viiict0r/tic-tac-toe/actions/workflows/main.yml) ![Vercel](https://therealsujitk-vercel-badge.vercel.app/?app=tic-tac-toe-viiict0r)
 
-</p>
+</div>
+<div align="center">
 
-<p align="center">
+  *Jogo da velha multijogador construído com [Next.js](https://nextjs.org/) & [Socket.io](https://socket.io/)!*
 
-   ##### [Demo](https://tic-tac-toe-viiict0r.vercel.app) :video_game:
+</div>
+
+
+<div align="center">
 
   <img src="/docs/assets/gif.gif" height="300px" />
-</p>
+
+  #### [Demo](https://tic-tac-toe-viiict0r.vercel.app) :video_game:
+
+</div>
 
 ## Sobre
 Jogo da velha multijogador, com suporte a diversas partidas em simultâneo e com matchmaking automático.
