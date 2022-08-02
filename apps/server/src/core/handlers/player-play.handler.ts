@@ -39,8 +39,6 @@ export const PlayerPlayHandler = (
       callback('Você não está em nenhum jogo.')
     }
 
-    // TODO: Improve this code
-    console.log('PLAYED', play)
     const playValue =
       findPlayerByToken?.getSide() === PlayerSide.X
         ? ArenaPositionValue.X

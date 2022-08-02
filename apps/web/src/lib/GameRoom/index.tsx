@@ -1,7 +1,6 @@
 import Arena from '@components/Arena'
 import PlayerAvatar from '@components/Arena/PlayerAvatar'
 import { AvatarKey } from '@components/Avatar'
-import { Button } from '@components/Button'
 import Logo from '@components/Logo'
 import { useGame } from '@hooks/useGame'
 import { usePlayer } from '@hooks/usePlayer'
@@ -93,7 +92,7 @@ const GameRoom: React.FC = () => {
           </div>
 
           <div className={styles.game_footer}>
-            <Button variant="danger">Desistir</Button>
+            {/* <Button variant="danger">Desistir</Button> */}
           </div>
         </div>
       </div>

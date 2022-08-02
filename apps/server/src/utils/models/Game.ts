@@ -72,15 +72,7 @@ export class Game {
     this.timeToPlay = 30
 
     this.timer = setInterval(() => {
-      console.log(
-        '[Debug - Timer] Timer running for game',
-        this.id,
-        'seconds',
-        this.timeToPlay
-      )
-
       if (this.timeToPlay <= 0) {
-        console.log('TEMPO ESGOTADO!')
         this.switchTurn()
 
         ServerManager.getConnection()
